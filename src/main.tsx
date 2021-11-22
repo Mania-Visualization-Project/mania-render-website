@@ -1,10 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import './index.css';
+import { App } from './App';
+import 'antd/dist/antd.css';
+import './index.less';
 
 ReactDOM.render(
   <React.StrictMode>
-    <div>mania-render-website</div>
+    <App />
   </React.StrictMode>,
   document.getElementById('root'),
 );

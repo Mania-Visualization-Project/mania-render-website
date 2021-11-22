@@ -100,6 +100,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
     'import/order': 'error',
+    'import/default': 'off',
+    'import/no-named-as-default-member': 'off',
   },
   'settings': {
     'import/parser': {
