@@ -14,6 +14,9 @@ export type TI18nKeys =
   'main-upload_replay_placeholder_hint' |
   'main-upload_map_hint' |
   'main-upload_bgm_hint' |
+  'modal-error_title' |
+  'modal-error_file_size_over_max' |
+  'modal-ok_text' |
   'upload-modal_title' |
   'btn-generate'
 ;

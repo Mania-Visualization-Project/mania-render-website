@@ -1,7 +1,7 @@
 import { TI18nKeys } from './types';
 
 const resource: Record<TI18nKeys, string> = {
-  'app-title': 'Mania Render 网',
+  'app-title': '骂娘无敌渲染器',
   'current-language': '简体中文',
   'app-settings': '设置',
   'settings-fps': 'FPS',
@@ -16,6 +16,9 @@ const resource: Record<TI18nKeys, string> = {
   'main-upload_map_hint': '支持.osz, .osr, .mcz, .mc, .zip文件',
   'main-upload_bgm_hint': '支持所有的 osu 或 malody 支持的音频文件',
   'main-drag_upload_text': '拖动或点击此处上传',
+  'modal-error_title': '错误！',
+  'modal-error_file_size_over_max': '文件大小不能超过 25M !',
+  'modal-ok_text': '确认',
   'upload-modal_title': '正在上传...',
   'btn-generate': '一键生成！',
 };

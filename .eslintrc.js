@@ -28,6 +28,7 @@ module.exports = {
   'ignorePatterns': [
     'dist/**/*',
     'script/**/*',
+    'vite.config.ts',
   ],
   'rules': {
     'indent': [
@@ -44,6 +45,12 @@ module.exports = {
     ],
     'no-console': 'error',
     'no-alert': 'error',
+    'no-param-reassign': 'error',
+    'space-before-function-paren': ['error', {
+      'anonymous': 'always',
+      'named': 'never',
+      'asyncArrow': 'always',
+    }],
     'comma-dangle': ['error', {
       'arrays': 'always-multiline',
       'objects': 'always-multiline',

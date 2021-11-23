@@ -17,6 +17,9 @@ const resource: Record<TI18nKeys, string> = {
   'main-upload_map': 'Click or drag file to this area to upload your maps',
   'main-upload_bgm': 'Click or drag file to this area to upload your bgm',
   'upload-modal_title': 'Uploading...',
+  'modal-error_title': 'Error!',
+  'modal-error_file_size_over_max': 'File size can not over 25MB',
+  'modal-ok_text': 'OK!',
   'btn-generate': 'Generate Now!',
 };
 
