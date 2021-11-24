@@ -1,7 +1,7 @@
 import { TI18nKeys } from './types';
 
 const resource: Record<TI18nKeys, string> = {
-  'app-title': '骂娘无敌渲染器',
+  'app-title': '骂娘渲染器',
   'current-language': '简体中文',
   'app-settings': '设置',
   'settings-fps': 'FPS',
@@ -13,14 +13,18 @@ const resource: Record<TI18nKeys, string> = {
   'main-upload_map': '拖动或点击此处上传谱面、谱包文件',
   'main-upload_bgm': '拖动或点击此处上传 bgm 文件',
   'main-upload_replay_placeholder_hint': '支持 .osr, .mr 文件',
-  'main-upload_map_hint': '支持.osz, .osr, .mcz, .mc, .zip文件',
+  'main-upload_map_hint': '支持 .osz, .osu, .mcz, .mc, .zip文件',
   'main-upload_bgm_hint': '支持所有的 osu 或 malody 支持的音频文件',
   'main-drag_upload_text': '拖动或点击此处上传',
   'modal-error_title': '错误！',
   'modal-error_file_size_over_max': '文件大小不能超过 25M !',
   'modal-ok_text': '确认',
-  'upload-modal_title': '正在上传...',
+  'upload-modal_title': '正在生成...',
   'btn-generate': '一键生成！',
+  'status-current_status': '当前状态：',
+  'status-current_in_queue': '当前排队数量',
+  'status-generate_success': '生成成功！您可以点击下载了',
+  'status-download_button': '这就下载!',
 };
 
 export const zh = {

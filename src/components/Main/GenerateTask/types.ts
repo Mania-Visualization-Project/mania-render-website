@@ -2,7 +2,7 @@ import { ISettings } from '../../../data/settings';
 
 export type QueueHandler = (count: number) => void;
 export type ProcessingHandler = (progress: number) => void;
-export type FinishHandler = () => void;
+export type FinishHandler = (filename: string) => void;
 
 export enum EGenerateQueryStatus {
   Queue = 'queue',
@@ -34,6 +34,7 @@ interface IProcessingResponse {
 
 interface IFinishResponse {
   type: EGenerateQueryStatus.Finish;
+  filename: string;
 }
 
 export type IQueryResponseData =

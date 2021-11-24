@@ -12,7 +12,7 @@ import { DraggerUpload } from '../DraggerUpload';
 import { SettingsPanel } from '../Settings';
 import { GenerateStatusPanel } from './GenerateStatusPanel';
 import { useGenerateTask } from './GenerateTask/useGenerateTask';
-import type { FinishHandler, ProcessingHandler, QueueHandler } from './GenerateTask/types';
+import type { ProcessingHandler, QueueHandler } from './GenerateTask/types';
 import { EGenerateQueryStatus } from './GenerateTask/types';
 import { MainContainer } from './styles';
 
@@ -21,7 +21,7 @@ type BeforeUploadHandler = Exclude<UploadProps['beforeUpload'], undefined>;
 
 const SUPPORT_REPLAY = ['.osr', '.mr'];
 const SUPPORT_MAP = ['.osz', '.osu', '.mcz', '.mc', '.zip'];
-const NOT_NEED_BGM_FILES_REGEX = /(mc|osu)/;
+const NEED_BGM_FILES_REGEX = /(mc|osu)/;
 const supportMapsAccept = SUPPORT_MAP.join(',');
 const supportReplayAccept = SUPPORT_REPLAY.join(',');
 
@@ -41,6 +41,7 @@ export const Main = React.memo(() => {
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [disableUploadBgm, setDisableUploadBgm] = useState(true);
   const [disableGenerate, setDisableGenerate] = useState(true);
+  const [isNeedUploadBgm, setIsNeedUploadBgm] = useState(false);
 
   const [mapId, setMapId] = useState<string>('');
   const [bgmId, setBgmId] = useState<string>('');
@@ -52,7 +53,6 @@ export const Main = React.memo(() => {
   const [generatePercent, setGeneratePercent] = useState<number>(0);
   const [generateStatus, setGenerateStatus] = useState(EGenerateQueryStatus.Unknown);
   const [queueCount, setQueueCount] = useState<number>(0);
-  const [hasFinished, setHasFinished] = useState(false);
 
   const handleSetId = useCallback((type: EFileType, id: string) => {
     if (type === EFileType.Bgm) {
@@ -90,7 +90,7 @@ export const Main = React.memo(() => {
 
     uploadTask.onprogress = (event) => {
       const { loaded, total } = event;
-      const percent = Math.floor(loaded / total * 100);
+      const percent = Math.floor(loaded / total);
       onProgress?.({ ...event, percent });
     };
 
@@ -112,30 +112,26 @@ export const Main = React.memo(() => {
     setGeneratePercent(progress);
   }, []);
 
-  const onFinish = useCallback<FinishHandler>(() => {
-    setHasFinished(true);
-    setShowGenerateModal(false);
-  }, []);
-
   const onQueue = useCallback<QueueHandler>((count) => {
     setQueueCount(count);
     setGenerateStatus(EGenerateQueryStatus.Queue);
   }, []);
 
-  const { generateVideo, downloadVideo } = useGenerateTask({ onFinish, onProcessing, onQueue });
+  const { generateVideo, downloadVideo, cancelTask } = useGenerateTask({ onProcessing, onQueue });
 
   const beforeChooseMap = useCallback<BeforeUploadHandler>((file) => {
     const filename = file.name;
     const fileExt = getFileExtension(filename);
-    if (NOT_NEED_BGM_FILES_REGEX.test(fileExt)) {
-      setDisableUploadBgm(false);
+    if (NEED_BGM_FILES_REGEX.test(fileExt)) {
+      setIsNeedUploadBgm(true);
     } else {
-      setDisableUploadBgm(true);
+      setIsNeedUploadBgm(false);
     }
   }, []);
 
   const handleGenerate = useCallback(async () => {
     setShowGenerateModal(true);
+    setGeneratePercent(0);
     try {
       await generateVideo({
         map_id: mapId,
@@ -148,13 +144,22 @@ export const Main = React.memo(() => {
     }
   }, [bgmId, generateVideo, mapId, replayId]);
 
+  const handleCancelGenerate = useCallback(() => {
+    setShowGenerateModal(false);
+    cancelTask();
+  }, [cancelTask]);
+
   useEffect(() => {
-    if (!mapId || !replayId) {
+    if (!mapId || !replayId || (isNeedUploadBgm && !bgmId)) {
       setDisableGenerate(true);
     } else {
       setDisableGenerate(false);
     }
-  }, [mapId, replayId]);
+  }, [bgmId, isNeedUploadBgm, mapId, replayId]);
+
+  useEffect(() => {
+    setDisableUploadBgm(!isNeedUploadBgm);
+  }, [isNeedUploadBgm]);
 
   return (
     <MainContainer>
@@ -235,16 +240,14 @@ export const Main = React.memo(() => {
           }}
           maskClosable={false}
           title={t('upload-modal_title')}
-          onCancel={() => {
-            setShowGenerateModal(false);
-          }}
+          onCancel={handleCancelGenerate}
           footer={null}
         >
           <GenerateStatusPanel
             percent={generatePercent}
             status={generateStatus}
             queueCount={queueCount}
-            finished={hasFinished}
+            finished={generatePercent === 100}
             onDownload={downloadVideo}
           />
         </Modal>

@@ -3,9 +3,9 @@ import { FinishHandler, IGenerateTaskParams, ProcessingHandler, QueueHandler } f
 import { GenerateTask } from './index';
 
 export interface IUseGenerateTaskParams {
-  onProcessing: ProcessingHandler;
-  onFinish: FinishHandler;
-  onQueue: QueueHandler;
+  onProcessing?: ProcessingHandler;
+  onFinish?: FinishHandler;
+  onQueue?: QueueHandler;
 }
 
 /**
@@ -23,9 +23,9 @@ export const useGenerateTask = ({
 
   const generateVideo = useCallback(async (params: IGenerateTaskParams) => {
     const generateTask = GenerateTask.create(params);
-    generateTask.onQueue = onQueue;
-    generateTask.onFinish = onFinish;
-    generateTask.onProcessing = onProcessing;
+    onQueue && (generateTask.onQueue = onQueue);
+    onFinish && (generateTask.onFinish = onFinish);
+    onProcessing && (generateTask.onProcessing = onProcessing);
     setTask(generateTask);
     await generateTask.start();
   }, [onFinish, onProcessing, onQueue]);

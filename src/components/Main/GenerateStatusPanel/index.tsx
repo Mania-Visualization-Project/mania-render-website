@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Progress, Space, Typography } from 'antd';
+import { round } from 'lodash';
+import { Button, Descriptions, Progress, Space, Typography } from 'antd';
+import { useTranslation } from '../../../common/i18n';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateStatusPanelWrapper } from './styles';
 
@@ -27,32 +29,65 @@ export const GenerateStatusPanel = ({
   finished,
   onDownload,
 }: GenerateStatusPanelProps) => {
+  const { t } = useTranslation();
   // TODO: i18n
   return (
     <GenerateStatusPanelWrapper>
-      <Typography.Text>
-        Current Status {status}
-      </Typography.Text>
-      {queueCount > 0 && (
-        <Typography.Text>
-          Current in Queue: {queueCount}
-        </Typography.Text>
-      )}
-      <Progress
-        type="circle"
-        percent={percent}
-        strokeColor={{
-          '0%': '#108ee9',
-          '100%': '#87d068',
-        }}
-      />
+      <Descriptions
+        bordered
+        column={1}
+      >
+        <Descriptions.Item
+          label={(
+            <Typography.Text>
+              {t('status-current_status')}
+            </Typography.Text>
+          )}
+        >
+          {status}
+        </Descriptions.Item>
+        {queueCount > 0 || (
+          <Descriptions.Item
+            label={(
+              <Typography.Text>
+                {t('status-current_in_queue')}
+              </Typography.Text>
+            )}
+          >
+            {queueCount}
+          </Descriptions.Item>
+        )}
+        <Descriptions.Item
+          label={(
+            <Typography.Text>
+              Generate Progress
+            </Typography.Text>
+          )}
+        >
+          <Progress
+            type="circle"
+            percent={round(percent, 2)}
+            strokeColor={{
+              '0%': '#108ee9',
+              '100%': '#87d068',
+            }}
+          />
+        </Descriptions.Item>
+      </Descriptions>
       {finished && (
-        <Space direction="vertical">
+        <Space
+          className="download-option"
+          direction="vertical"
+        >
           <Typography.Text>
-            Generate Success, click button to download
+            {t('status-generate_success')}
           </Typography.Text>
-          <Button onClick={onDownload}>
-            Download!
+          <Button
+            onClick={onDownload}
+            block
+            type="primary"
+          >
+            {t('status-download_button')}
           </Button>
         </Space>
       )}

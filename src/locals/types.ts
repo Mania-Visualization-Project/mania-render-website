@@ -18,5 +18,9 @@ export type TI18nKeys =
   'modal-error_file_size_over_max' |
   'modal-ok_text' |
   'upload-modal_title' |
-  'btn-generate'
+  'btn-generate' |
+  'status-current_status' |
+  'status-current_in_queue' |
+  'status-generate_success' |
+  'status-download_button'
 ;

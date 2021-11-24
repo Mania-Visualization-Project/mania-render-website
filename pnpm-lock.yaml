@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@ant-design/icons': ^4.7.0
+  '@types/lodash': ^4.14.177
   '@types/react': ^17.0.0
   '@types/react-dom': ^17.0.0
   '@types/styled-components': ^5.1.15
@@ -18,6 +19,7 @@ specifiers:
   husky: ^7.0.4
   i18next: ^21.5.2
   less: ^4.1.2
+  lodash: ^4.17.21
   react: ^17.0.0
   react-dom: ^17.0.0
   react-i18next: ^11.14.2
@@ -31,12 +33,14 @@ dependencies:
   axios: 0.24.0
   i18next: 21.5.2
   less: 4.1.2
+  lodash: 4.17.21
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-i18next: 11.14.2_i18next@21.5.2+react@17.0.2
   styled-components: 5.3.3_react-dom@17.0.2+react@17.0.2
 
 devDependencies:
+  '@types/lodash': 4.14.177
   '@types/react': 17.0.35
   '@types/react-dom': 17.0.11
   '@types/styled-components': 5.1.15
@@ -480,6 +484,10 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=, tarball: '@types/json5/download/@types/json5-0.0.29.tgz'}
+    dev: true
+
+  /@types/lodash/4.14.177:
+    resolution: {integrity: sha512-0fDwydE2clKe9MNfvXHBHF9WEahRuj+msTuQqOmAApNORFvhMYZKNGGJdCzuhheVjMps/ti0Ak/iJPACMaevvw==, tarball: '@types/lodash/download/@types/lodash-4.14.177.tgz'}
     dev: true
 
   /@types/prop-types/15.7.4:

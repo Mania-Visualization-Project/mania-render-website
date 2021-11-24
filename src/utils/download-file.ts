@@ -11,6 +11,6 @@ export const downloadFile = (url: string, filename?: string) => {
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  filename && (a.download = filename);
+  !!filename && (a.download = filename);
   a.click();
 };

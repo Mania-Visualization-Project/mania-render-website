@@ -15,16 +15,18 @@ export const App = () => {
     <div className="app-container">
       <Layout className="mr-app">
         <Header className="app-header">
-          <div className="title-content">{t('app-title')}</div>
-          <div className="right-options">
-            <Space size={24}>
-              <div className="change-language">
-                <LanguageSwitch />
-              </div>
-              <div className="setting-button">
-                <SettingsButton />
-              </div>
-            </Space>
+          <div className="header-main">
+            <div className="title-content">{t('app-title')}</div>
+            <div className="right-options">
+              <Space size={24}>
+                <div className="change-language">
+                  <LanguageSwitch />
+                </div>
+                <div className="setting-button">
+                  <SettingsButton />
+                </div>
+              </Space>
+            </div>
           </div>
         </Header>
         <Content className="app-content">

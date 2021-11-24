@@ -40,6 +40,8 @@ export class GenerateTask {
 
   private _query_timer: number;
 
+  private _download_filename: string;
+
   public set onQueue(onQueue: QueueHandler) {
     this._onQueue = onQueue;
   }
@@ -62,6 +64,7 @@ export class GenerateTask {
     this._onProcessing = null;
     this._onFinish = null;
     this._query_timer = -1;
+    this._download_filename = 'download';
   }
 
   public static create({
@@ -126,7 +129,18 @@ export class GenerateTask {
         handleProcessing?.(result?.progress ?? -1);
         devLog('[processing]', result);
       } else if (type === EGenerateQueryStatus.Finish) {
-        handleFinish?.();
+        const downloadFilename = result?.filename ?? 'download';
+        /**
+         * why here need this line ?
+         * because the backend will directly return finish instead return
+         * percent 100 then finish...
+         *
+         * ┭┮﹏┭┮
+         */
+        handleProcessing?.(100);
+
+        handleFinish?.(downloadFilename);
+        this._download_filename = downloadFilename;
         devLog('[finish]', result);
         clearInterval(this._query_timer);
       } else {
@@ -154,6 +168,6 @@ export class GenerateTask {
 
   public async download() {
     const url = `/mania/api/download?task_id=${this._task_id}`;
-    downloadFile(url);
+    downloadFile(url, this._download_filename);
   }
 }
