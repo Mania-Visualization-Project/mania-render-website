@@ -1,3 +1,5 @@
+import { ELanguage } from './enums';
+
 export enum EMalodyPlatform {
   PE = 'PE',
   PC = 'PC',
@@ -27,4 +29,11 @@ export interface ISettings {
    * 视频长度
    */
   height: number;
+}
+
+export interface IGlobalSettings extends ISettings {
+  /**
+   * 语言
+   */
+  language: ELanguage;
 }

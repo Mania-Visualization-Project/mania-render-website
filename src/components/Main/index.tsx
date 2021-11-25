@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import type { UploadProps } from 'antd';
 import { Button, Col, Modal, Row, Space } from 'antd';
 import { useTranslation } from '../../common/i18n';
+import { DEFAULT_SETTINGS } from '../../common/constants';
 import { getLocalSettings } from '../../common/local-settings';
 import { getFileExtension } from '../../utils/get-file-extension';
 import { EFileType } from '../../data/enums';
 import { uploadFiles } from '../../api/upload-files';
 import { transformResponse } from '../../api/transform-response';
-import { ErrorToast } from '../ErrorToast';
+import { ErrorView } from '../ErrorToast';
 import { DraggerUpload } from '../DraggerUpload';
 import { SettingsPanel } from '../Settings';
 import { GenerateStatusPanel } from './GenerateStatusPanel';
@@ -37,6 +38,7 @@ const MAX_FILESIZE = 1024 * 1024 * 25;
  */
 export const Main = React.memo(() => {
   const { t } = useTranslation();
+  const localSettings = getLocalSettings();
 
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [disableUploadBgm, setDisableUploadBgm] = useState(true);
@@ -100,7 +102,7 @@ export const Main = React.memo(() => {
       onSuccess?.(data);
       handleSetId(type, data.file_id);
     } catch (err: any) {
-      ErrorToast.show(err);
+      ErrorView.toast(err);
       onError?.(err);
     }
 
@@ -137,12 +139,12 @@ export const Main = React.memo(() => {
         map_id: mapId,
         bgm_id: bgmId,
         replay_id: replayId,
-        settings: getLocalSettings(),
+        settings: localSettings || DEFAULT_SETTINGS,
       });
     } catch (err: any) {
-      ErrorToast.show(err);
+      ErrorView.modal(err);
     }
-  }, [bgmId, generateVideo, mapId, replayId]);
+  }, [bgmId, generateVideo, localSettings, mapId, replayId]);
 
   const handleCancelGenerate = useCallback(() => {
     setShowGenerateModal(false);

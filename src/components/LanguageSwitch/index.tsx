@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Dropdown, Menu } from 'antd';
-import { changeLanguage, ELanguage, useTranslation } from '../../common/i18n';
+import { changeLanguage, useTranslation } from '../../common/i18n';
+import { ELanguage } from '../../data/enums';
 
 import './styles.less';
 

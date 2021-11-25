@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { DEFAULT_SETTINGS } from '../../../common/constants';
 import { ISettings } from '../../../data/settings';
-import { DEFAULT_SETTINGS } from '../../../common/local-settings';
 import { downloadFile } from '../../../utils/download-file';
 import { devLog } from '../../../utils/dev-log';
 import { transformResponse } from '../../../api/transform-response';
@@ -114,39 +114,46 @@ export class GenerateTask {
   private startQuery() {
     devLog('[start query]');
 
-    this._query_timer = setInterval(async () => {
-      const result = await this.query();
-      const { type } = result;
+    return new Promise<void>(((resolve, reject) => {
+      this._query_timer = setInterval(async () => {
+        try {
+          const result = await this.query();
+          const { type } = result;
 
-      const handleQueue = this._onQueue;
-      const handleProcessing = this._onProcessing;
-      const handleFinish = this._onFinish;
+          const handleQueue = this._onQueue;
+          const handleProcessing = this._onProcessing;
+          const handleFinish = this._onFinish;
 
-      if (type === EGenerateQueryStatus.Queue) {
-        handleQueue?.(result?.count ?? -1);
-        devLog('[query]', result);
-      } else if (type === EGenerateQueryStatus.Processing) {
-        handleProcessing?.(result?.progress ?? -1);
-        devLog('[processing]', result);
-      } else if (type === EGenerateQueryStatus.Finish) {
-        const downloadFilename = result?.filename ?? 'download';
-        /**
-         * why here need this line ?
-         * because the backend will directly return finish instead return
-         * percent 100 then finish...
-         *
-         * ┭┮﹏┭┮
-         */
-        handleProcessing?.(100);
+          if (type === EGenerateQueryStatus.Queue) {
+            handleQueue?.(result?.count ?? -1);
+            devLog('[query]', result);
+          } else if (type === EGenerateQueryStatus.Processing) {
+            handleProcessing?.(result?.progress ?? -1);
+            devLog('[processing]', result);
+          } else if (type === EGenerateQueryStatus.Finish) {
+            const downloadFilename = result?.filename ?? 'download';
+            /**
+             * why here need this line ?
+             * because the backend will directly return finish instead return
+             * percent 100 then finish...
+             *
+             * ┭┮﹏┭┮
+             */
+            handleProcessing?.(100);
 
-        handleFinish?.(downloadFilename);
-        this._download_filename = downloadFilename;
-        devLog('[finish]', result);
-        clearInterval(this._query_timer);
-      } else {
-        clearInterval(this._query_timer);
-      }
-    }, GenerateTask.QUERY_INTERVAL);
+            handleFinish?.(downloadFilename);
+            this._download_filename = downloadFilename;
+            devLog('[finish]', result);
+            clearInterval(this._query_timer);
+            resolve();
+          } else {
+            clearInterval(this._query_timer);
+          }
+        } catch (err: any) {
+          reject(err);
+        }
+      }, GenerateTask.QUERY_INTERVAL);
+    }));
   }
 
   private async query(): Promise<IQueryResponseData> {

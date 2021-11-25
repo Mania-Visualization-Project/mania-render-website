@@ -1,38 +1,54 @@
-import { Layout, Space } from 'antd';
-import { useTranslation } from './common/i18n';
-import { LanguageSwitch } from './components/LanguageSwitch';
-import { SettingsButton } from './components/Settings';
+import { useEffect } from 'react';
+import { Layout } from 'antd';
+import { omit } from 'lodash';
 import { Main } from './components/Main';
+import { Navigator } from './components/Navigator';
+import { changeLanguage, initI18n } from './common/i18n';
+import { getLocalSettings, setLocalSettings } from './common/local-settings';
+import { getLocalLanguage, setLocalLanguage } from './common/local-language';
+import { getConfig } from './api/get-config';
+import { ErrorView } from './components/ErrorToast';
+import { Container } from './styles';
 
-import './App.less';
 
 const { Header, Content } = Layout;
 
+initI18n();
+
 export const App = () => {
-  const { t } = useTranslation();
+
+  useEffect(() => {
+    const localSettings = getLocalSettings();
+    const localLanguage = getLocalLanguage();
+
+    if (!localLanguage || !localSettings) {
+      getConfig().then((settings) => {
+        if (!localLanguage) {
+          changeLanguage(settings.language).then();
+          setLocalLanguage(settings.language);
+        } else {
+          changeLanguage(localLanguage).then();
+        }
+
+        if (!localSettings) {
+          setLocalSettings(omit(settings, 'language'));
+        }
+      }).catch((err: any) => {
+        ErrorView.toast(err);
+      });
+    }
+  }, []);
 
   return (
-    <div className="app-container">
+    <Container>
       <Layout className="mr-app">
         <Header className="app-header">
-          <div className="header-main">
-            <div className="title-content">{t('app-title')}</div>
-            <div className="right-options">
-              <Space size={24}>
-                <div className="change-language">
-                  <LanguageSwitch />
-                </div>
-                <div className="setting-button">
-                  <SettingsButton />
-                </div>
-              </Space>
-            </div>
-          </div>
+          <Navigator />
         </Header>
         <Content className="app-content">
           <Main />
         </Content>
       </Layout>
-    </div>
+    </Container>
   );
 };

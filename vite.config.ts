@@ -11,5 +11,13 @@ export default defineConfig({
         target: 'http://1.116.195.211',
       }
     }
-  }
+  },
+  build: {
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+    minify: true,
+    outDir: 'build/mania',
+    emptyOutDir: true,
+  },
 })

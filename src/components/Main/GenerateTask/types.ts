@@ -1,8 +1,10 @@
 import { ISettings } from '../../../data/settings';
+import { IErrorMessage } from '../../ErrorToast';
 
 export type QueueHandler = (count: number) => void;
 export type ProcessingHandler = (progress: number) => void;
 export type FinishHandler = (filename: string) => void;
+export type ErrorHandler = (err: IErrorMessage) => void;
 
 export enum EGenerateQueryStatus {
   Queue = 'queue',

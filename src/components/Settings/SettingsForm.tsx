@@ -4,6 +4,7 @@ import { useTranslation } from '../../common/i18n';
 import { getLocalSettings, setLocalSettings } from '../../common/local-settings';
 import type { ISettings } from '../../data/settings';
 import { EMalodyPlatform } from '../../data/settings';
+import { DEFAULT_SETTINGS } from '../../common/constants';
 
 export const SettingsForm = () => {
   const localSettings = getLocalSettings();
@@ -19,7 +20,7 @@ export const SettingsForm = () => {
   return (
     <Form<ISettings>
       form={form}
-      initialValues={localSettings}
+      initialValues={localSettings || DEFAULT_SETTINGS}
       layout="vertical"
       style={{ width: '100%' }}
       wrapperCol={{ span: 24 }}
