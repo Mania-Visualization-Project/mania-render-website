@@ -5,7 +5,6 @@
     "prepare": "npx husky install",
     "dev": "vite",
     "build": "tsc && vite build",
-    "deploy": "node script/deploy.js",
     "rebuild": "rm -rf dist && vite build",
     "serve": "vite preview",
     "lint": "eslint src",

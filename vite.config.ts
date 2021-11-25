@@ -17,7 +17,7 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     minify: true,
-    outDir: 'build/mania',
     emptyOutDir: true,
   },
+  base: '/mania',
 })
