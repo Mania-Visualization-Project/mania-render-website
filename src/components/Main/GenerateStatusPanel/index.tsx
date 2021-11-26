@@ -34,7 +34,7 @@ export const GenerateStatusPanel = ({
 
   return (
     <GenerateStatusPanelWrapper>
-      {!finished && (
+      {!finished && status !== EGenerateQueryStatus.Error && (
         <Typography.Text type="danger" strong>
           {t('status-generate_generating_introduction')}
         </Typography.Text>

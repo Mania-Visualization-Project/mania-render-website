@@ -163,7 +163,7 @@ export const Main = React.memo(() => {
   }, [bgmId, cancelTask, generateVideo, handleInitStatusData, localSettings, mapId, replayId]);
 
   const handleCancelGenerate = useCallback(() => {
-    if (generateStatus === EGenerateQueryStatus.Finish) {
+    if (generateStatus === EGenerateQueryStatus.Finish || generateStatus === EGenerateQueryStatus.Error) {
       setShowGenerateModal(false);
       cancelTask();
       return;
@@ -251,7 +251,7 @@ export const Main = React.memo(() => {
             alignItems: 'center',
           }}
           maskClosable={false}
-          title={t('upload-modal_title')}
+          title={generateStatus === EGenerateQueryStatus.Error ? t('status-generate_status_error') : t('upload-modal_title')}
           onCancel={handleCancelGenerate}
           footer={null}
         >
