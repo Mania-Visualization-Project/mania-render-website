@@ -144,12 +144,13 @@ export class GenerateTask {
             handleFinish?.(downloadFilename);
             this._download_filename = downloadFilename;
             devLog('[finish]', result);
-            clearInterval(this._query_timer);
+            this.cancelQuery();
             resolve();
           } else {
-            clearInterval(this._query_timer);
+            this.cancelQuery();
           }
         } catch (err: any) {
+          this.cancelQuery();
           reject(err);
         }
       }, GenerateTask.QUERY_INTERVAL);
