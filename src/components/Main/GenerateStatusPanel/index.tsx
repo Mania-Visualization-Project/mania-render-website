@@ -10,6 +10,9 @@ export interface GenerateStatusPanelProps {
   percent: number;
   status: EGenerateQueryStatus;
   queueCount: number;
+  audioName: string;
+  mapName: string;
+  replayName: string;
   finished: boolean;
   onDownload: () => void;
 }
@@ -21,6 +24,9 @@ export interface GenerateStatusPanelProps {
  * @param queueCount
  * @param finished
  * @param onDownload
+ * @param audioName
+ * @param mapName
+ * @param replayName
  * @constructor
  */
 export const GenerateStatusPanel = ({
@@ -29,6 +35,9 @@ export const GenerateStatusPanel = ({
   queueCount,
   finished,
   onDownload,
+  audioName,
+  mapName,
+  replayName,
 }: GenerateStatusPanelProps) => {
   const { t } = useTranslation();
 
@@ -39,6 +48,30 @@ export const GenerateStatusPanel = ({
           {t('status-generate_generating_introduction')}
         </Typography.Text>
       )}
+      <Typography.Paragraph>
+        <ul>
+          <li>
+            <Typography.Text strong>
+              {t('status-current_file_name_label')}&nbsp;
+            </Typography.Text>
+            {replayName}
+          </li>
+          <li>
+            <Typography.Text strong>
+              {t('status-current_map_name_label')}&nbsp;
+            </Typography.Text>
+            {mapName}
+          </li>
+          {audioName && (
+            <li>
+              <Typography.Text strong>
+                {t('status-current_audio_name_label')}&nbsp;
+              </Typography.Text>
+              {audioName}
+            </li>
+          )}
+        </ul>
+      </Typography.Paragraph>
       <Descriptions
         bordered
         column={1}

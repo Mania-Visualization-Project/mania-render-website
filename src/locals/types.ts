@@ -23,6 +23,9 @@ export type TI18nKeys =
   'btn-generate' |
   'status-current_status' |
   'status-current_in_queue' |
+  'status-current_file_name_label' |
+  'status-current_audio_name_label' |
+  'status-current_map_name_label' |
   'status-generate_success' |
   'status-download_button' |
   'status-generate_progress_label' |

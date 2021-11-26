@@ -46,6 +46,10 @@ export const Main = React.memo(() => {
   const [disableGenerate, setDisableGenerate] = useState(true);
   const [isNeedUploadBgm, setIsNeedUploadBgm] = useState(false);
 
+  const [replayName, setReplayName] = useState<string>('');
+  const [mapName, setMapName] = useState<string>('');
+  const [audioName, setAudioName] = useState<string>('');
+
   const [mapId, setMapId] = useState<string>('');
   const [bgmId, setBgmId] = useState<string>('');
   const [replayId, setReplayId] = useState<string>('');
@@ -93,6 +97,16 @@ export const Main = React.memo(() => {
       });
 
       return false;
+    }
+
+    const chosenFile = file as File;
+
+    if (type === EFileType.Map) {
+      setMapName(chosenFile?.name || '');
+    } else if (type === EFileType.Replay) {
+      setReplayName(chosenFile?.name || '');
+    } else if (type === EFileType.Bgm) {
+      setAudioName(chosenFile?.name || '');
     }
 
     const uploadTask = uploadFiles({ type, file });
@@ -262,6 +276,9 @@ export const Main = React.memo(() => {
             queueCount={queueCount}
             finished={generatePercent === 100}
             onDownload={downloadVideo}
+            replayName={replayName}
+            mapName={mapName}
+            audioName={audioName}
           />
         </Modal>
       </Space>
