@@ -25,6 +25,10 @@ export const initI18n = () => {
 
 export const i18n = i18next;
 
+export const t = (key: TI18nKeys): string => {
+  return i18next.t<string, TI18nKeys>(key);
+};
+
 type TranslationFunctionType = (key: TI18nKeys) => string;
 
 export const useTranslation = () => {

@@ -22,5 +22,15 @@ export type TI18nKeys =
   'status-current_status' |
   'status-current_in_queue' |
   'status-generate_success' |
-  'status-download_button'
-;
+  'status-download_button' |
+  'status-generate_progress_label' |
+  'status-generate_status_finish' |
+  'status-generate_status_unknown' |
+  'status-generate_status_queue' |
+  'status-generate_status_processing' |
+  'status-generate_generating_introduction' |
+  'modal-generate_close_confirm_title' |
+  'modal-generate_close_confirm_content' |
+  'modal-generate_close_confirm_ok_text' |
+  'modal-generate_close_confirm_cancel_text'
+  ;

@@ -2,6 +2,7 @@ import React from 'react';
 import { round } from 'lodash';
 import { Button, Descriptions, Progress, Space, Typography } from 'antd';
 import { useTranslation } from '../../../common/i18n';
+import { convertGenerateStatus2i18n } from '../../../common/converters/convert-generate-status2i18n';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateStatusPanelWrapper } from './styles';
 
@@ -30,9 +31,14 @@ export const GenerateStatusPanel = ({
   onDownload,
 }: GenerateStatusPanelProps) => {
   const { t } = useTranslation();
-  // TODO: i18n
+
   return (
     <GenerateStatusPanelWrapper>
+      {!finished && (
+        <Typography.Text type="danger" strong>
+          {t('status-generate_generating_introduction')}
+        </Typography.Text>
+      )}
       <Descriptions
         bordered
         column={1}
@@ -44,9 +50,9 @@ export const GenerateStatusPanel = ({
             </Typography.Text>
           )}
         >
-          {status}
+          {t(convertGenerateStatus2i18n(status))}
         </Descriptions.Item>
-        {queueCount > 0 || (
+        {queueCount > 0 && (
           <Descriptions.Item
             label={(
               <Typography.Text>
@@ -60,7 +66,7 @@ export const GenerateStatusPanel = ({
         <Descriptions.Item
           label={(
             <Typography.Text>
-              Generate Progress
+              {t('status-generate_progress_label')}
             </Typography.Text>
           )}
         >
