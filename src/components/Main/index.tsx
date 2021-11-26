@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import type { UploadProps } from 'antd';
-import { Button, Col, Modal, Row, Space } from 'antd';
+import { Button, Modal, Space } from 'antd';
 import { CustomerServiceFilled, FileZipOutlined, PlaySquareOutlined } from '@ant-design/icons';
 import { useTranslation } from '../../common/i18n';
 import { DEFAULT_SETTINGS } from '../../common/constants';
@@ -11,12 +11,12 @@ import { uploadFiles } from '../../api/upload-files';
 import { transformResponse } from '../../api/transform-response';
 import { ErrorView } from '../ErrorToast';
 import { DraggerUpload } from '../DraggerUpload';
-import { SettingsPanel } from '../Settings';
 import { GenerateStatusPanel } from './GenerateStatusPanel';
 import { useGenerateTask } from './GenerateTask/useGenerateTask';
-import type { ProcessingHandler, QueueHandler } from './GenerateTask/types';
+import type { FinishHandler, ProcessingHandler, QueueHandler } from './GenerateTask/types';
 import { EGenerateQueryStatus } from './GenerateTask/types';
 import { MainContainer } from './styles';
+import { MainWrapper } from './MainWrapper';
 
 type CustomRequestOptions = Parameters<Exclude<UploadProps['customRequest'], undefined>>[0];
 type BeforeUploadHandler = Exclude<UploadProps['beforeUpload'], undefined>;
@@ -56,6 +56,12 @@ export const Main = React.memo(() => {
   const [generatePercent, setGeneratePercent] = useState<number>(0);
   const [generateStatus, setGenerateStatus] = useState(EGenerateQueryStatus.Unknown);
   const [queueCount, setQueueCount] = useState<number>(0);
+
+  const handleInitStatusData = useCallback(() => {
+    setGeneratePercent(0);
+    setQueueCount(0);
+    setGenerateStatus(EGenerateQueryStatus.Unknown);
+  }, []);
 
   const handleSetId = useCallback((type: EFileType, id: string) => {
     if (type === EFileType.Bgm) {
@@ -111,6 +117,7 @@ export const Main = React.memo(() => {
   }, [handleSetId, t]);
 
   const onProcessing = useCallback<ProcessingHandler>((progress) => {
+    setQueueCount(0);
     setGenerateStatus(EGenerateQueryStatus.Processing);
     setGeneratePercent(progress);
   }, []);
@@ -120,7 +127,12 @@ export const Main = React.memo(() => {
     setGenerateStatus(EGenerateQueryStatus.Queue);
   }, []);
 
-  const { generateVideo, downloadVideo, cancelTask } = useGenerateTask({ onProcessing, onQueue });
+  const onFinish = useCallback<FinishHandler>(() => {
+    setGenerateStatus(EGenerateQueryStatus.Finish);
+    setGeneratePercent(100);
+  }, []);
+
+  const { generateVideo, downloadVideo, cancelTask } = useGenerateTask({ onProcessing, onQueue, onFinish });
 
   const beforeChooseMap = useCallback<BeforeUploadHandler>((file) => {
     const filename = file.name;
@@ -134,7 +146,8 @@ export const Main = React.memo(() => {
 
   const handleGenerate = useCallback(async () => {
     setShowGenerateModal(true);
-    setGeneratePercent(0);
+    handleInitStatusData();
+
     try {
       await generateVideo({
         map_id: mapId,
@@ -145,12 +158,26 @@ export const Main = React.memo(() => {
     } catch (err: any) {
       ErrorView.modal(err);
     }
-  }, [bgmId, generateVideo, localSettings, mapId, replayId]);
+  }, [bgmId, generateVideo, handleInitStatusData, localSettings, mapId, replayId]);
 
   const handleCancelGenerate = useCallback(() => {
-    setShowGenerateModal(false);
-    cancelTask();
-  }, [cancelTask]);
+    if (generateStatus === EGenerateQueryStatus.Finish) {
+      setShowGenerateModal(false);
+      cancelTask();
+      return;
+    }
+
+    Modal.confirm({
+      title: t('modal-generate_close_confirm_title'),
+      content: t('modal-generate_close_confirm_content'),
+      okText: t('modal-generate_close_confirm_ok_text'),
+      cancelText: t('modal-generate_close_confirm_cancel_text'),
+      onOk() {
+        setShowGenerateModal(false);
+        cancelTask();
+      },
+    });
+  }, [cancelTask, generateStatus, t]);
 
   useEffect(() => {
     if (!mapId || !replayId || (isNeedUploadBgm && !bgmId)) {
@@ -171,58 +198,35 @@ export const Main = React.memo(() => {
         size={24}
         direction="vertical"
       >
-        <Row>
-          <Col
-            span={24}
-            md={16}
-            lg={16}
-            xl={16}
-            xxl={16}
-          >
-            <Space
-              className="upload-wrapper"
-              size={24}
-              direction="vertical"
-            >
-              <DraggerUpload
-                placeholderText={t('main-upload_replay_placeholder')}
-                hintText={t('main-upload_replay_placeholder_hint')}
-                icon={<PlaySquareOutlined />}
-                accept={supportReplayAccept}
-                maxCount={1}
-                customRequest={(options) => handleUpload(EFileType.Replay, options)}
-              />
-              <DraggerUpload
-                placeholderText={t('main-upload_map')}
-                hintText={t('main-upload_map_hint')}
-                icon={<FileZipOutlined />}
-                accept={supportMapsAccept}
-                maxCount={1}
-                beforeUpload={beforeChooseMap}
-                customRequest={(options) => handleUpload(EFileType.Map, options)}
-              />
-              {!disableUploadBgm && (
-                <DraggerUpload
-                  placeholderText={t('main-upload_bgm')}
-                  hintText={t('main-upload_bgm_hint')}
-                  icon={<CustomerServiceFilled />}
-                  accept="audio/*"
-                  maxCount={1}
-                  customRequest={(options) => handleUpload(EFileType.Bgm, options)}
-                />
-              )}
-            </Space>
-          </Col>
-          <Col
-            span={0}
-            md={8}
-            lg={8}
-            xl={8}
-            xxl={8}
-          >
-            <SettingsPanel />
-          </Col>
-        </Row>
+        <MainWrapper>
+          <DraggerUpload
+            placeholderText={t('main-upload_replay_placeholder')}
+            hintText={t('main-upload_replay_placeholder_hint')}
+            icon={<PlaySquareOutlined />}
+            accept={supportReplayAccept}
+            maxCount={1}
+            customRequest={(options) => handleUpload(EFileType.Replay, options)}
+          />
+          <DraggerUpload
+            placeholderText={t('main-upload_map')}
+            hintText={t('main-upload_map_hint')}
+            icon={<FileZipOutlined />}
+            accept={supportMapsAccept}
+            maxCount={1}
+            beforeUpload={beforeChooseMap}
+            customRequest={(options) => handleUpload(EFileType.Map, options)}
+          />
+          {!disableUploadBgm && (
+            <DraggerUpload
+              placeholderText={t('main-upload_bgm')}
+              hintText={t('main-upload_bgm_hint')}
+              icon={<CustomerServiceFilled />}
+              accept="audio/*"
+              maxCount={1}
+              customRequest={(options) => handleUpload(EFileType.Bgm, options)}
+            />
+          )}
+        </MainWrapper>
         <Space
           className="btn-wrapper"
           size={24}

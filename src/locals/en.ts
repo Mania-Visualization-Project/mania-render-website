@@ -25,6 +25,16 @@ const resource: Record<TI18nKeys, string> = {
   'status-current_in_queue': 'Current in Queue:',
   'status-generate_success': 'Generate Success, click button to download.',
   'status-download_button': 'Download!',
+  'status-generate_progress_label': 'Generate Progress',
+  'status-generate_status_finish': 'Finished',
+  'status-generate_status_unknown': 'Waiting',
+  'status-generate_status_queue': 'In Queue',
+  'status-generate_status_processing': 'Processing',
+  'status-generate_generating_introduction': 'Generating...   Please do not close the dialog or browser.',
+  'modal-generate_close_confirm_title': 'Are you sure to close?',
+  'modal-generate_close_confirm_content': 'Close the dialog then the generating replay video progress will be abort, are you sure to close the dialog?',
+  'modal-generate_close_confirm_ok_text': 'I confirm',
+  'modal-generate_close_confirm_cancel_text': 'Cancel',
 };
 
 export const en = {

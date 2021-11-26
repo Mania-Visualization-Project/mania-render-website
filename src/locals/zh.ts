@@ -25,6 +25,16 @@ const resource: Record<TI18nKeys, string> = {
   'status-current_in_queue': '当前排队数量',
   'status-generate_success': '生成成功！您可以点击下载了',
   'status-download_button': '这就下载!',
+  'status-generate_progress_label': '当前进度',
+  'status-generate_status_finish': '已完成',
+  'status-generate_status_unknown': '等待中',
+  'status-generate_status_queue': '排队中',
+  'status-generate_status_processing': '处理中',
+  'status-generate_generating_introduction': '**正在生成，请不要关闭窗口或浏览器**',
+  'modal-generate_close_confirm_title': '您确定要关闭吗？',
+  'modal-generate_close_confirm_content': '关闭窗口将会停止生成回放视频，您确定要关闭吗？',
+  'modal-generate_close_confirm_ok_text': '确定',
+  'modal-generate_close_confirm_cancel_text': '取消',
 };
 
 export const zh = {
