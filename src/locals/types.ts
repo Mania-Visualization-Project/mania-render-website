@@ -32,5 +32,6 @@ export type TI18nKeys =
   'modal-generate_close_confirm_title' |
   'modal-generate_close_confirm_content' |
   'modal-generate_close_confirm_ok_text' |
-  'modal-generate_close_confirm_cancel_text'
+  'modal-generate_close_confirm_cancel_text' |
+  'status-generate_status_error'
   ;

@@ -11,6 +11,7 @@ export enum EGenerateQueryStatus {
   Processing = 'processing',
   Finish = 'finish',
   Unknown = 'unknown',
+  Error = 'error',
 }
 
 export interface IGenerateParams {

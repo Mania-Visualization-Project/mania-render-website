@@ -7,6 +7,7 @@ export const convertGenerateStatus2i18n = (status: EGenerateQueryStatus): TI18nK
     [EGenerateQueryStatus.Unknown]: 'status-generate_status_unknown',
     [EGenerateQueryStatus.Queue]: 'status-generate_status_queue',
     [EGenerateQueryStatus.Processing]: 'status-generate_status_processing',
+    [EGenerateQueryStatus.Error]: 'status-generate_status_error',
   };
 
   return map[status];

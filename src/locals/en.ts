@@ -31,6 +31,7 @@ const resource: Record<TI18nKeys, string> = {
   'status-generate_status_queue': 'In Queue',
   'status-generate_status_processing': 'Processing',
   'status-generate_generating_introduction': 'Generating...   Please do not close the dialog or browser.',
+  'status-generate_status_error': 'Error!',
   'modal-generate_close_confirm_title': 'Are you sure to close?',
   'modal-generate_close_confirm_content': 'Close the dialog then the generating replay video progress will be abort, are you sure to close the dialog?',
   'modal-generate_close_confirm_ok_text': 'I confirm',

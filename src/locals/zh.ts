@@ -31,6 +31,7 @@ const resource: Record<TI18nKeys, string> = {
   'status-generate_status_queue': '排队中',
   'status-generate_status_processing': '处理中',
   'status-generate_generating_introduction': '**正在生成，请不要关闭窗口或浏览器**',
+  'status-generate_status_error': '出错啦！',
   'modal-generate_close_confirm_title': '您确定要关闭吗？',
   'modal-generate_close_confirm_content': '关闭窗口将会停止生成回放视频，您确定要关闭吗？',
   'modal-generate_close_confirm_ok_text': '确定',

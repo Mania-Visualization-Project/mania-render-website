@@ -157,8 +157,10 @@ export const Main = React.memo(() => {
       });
     } catch (err: any) {
       ErrorView.modal(err);
+      cancelTask();
+      setGenerateStatus(EGenerateQueryStatus.Error);
     }
-  }, [bgmId, generateVideo, handleInitStatusData, localSettings, mapId, replayId]);
+  }, [bgmId, cancelTask, generateVideo, handleInitStatusData, localSettings, mapId, replayId]);
 
   const handleCancelGenerate = useCallback(() => {
     if (generateStatus === EGenerateQueryStatus.Finish) {
