@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import type { UploadProps } from 'antd';
 import { Button, Col, Modal, Row, Space } from 'antd';
+import { CustomerServiceFilled, FileZipOutlined, PlaySquareOutlined } from '@ant-design/icons';
 import { useTranslation } from '../../common/i18n';
 import { DEFAULT_SETTINGS } from '../../common/constants';
 import { getLocalSettings } from '../../common/local-settings';
@@ -186,6 +187,7 @@ export const Main = React.memo(() => {
               <DraggerUpload
                 placeholderText={t('main-upload_replay_placeholder')}
                 hintText={t('main-upload_replay_placeholder_hint')}
+                icon={<PlaySquareOutlined />}
                 accept={supportReplayAccept}
                 maxCount={1}
                 customRequest={(options) => handleUpload(EFileType.Replay, options)}
@@ -193,6 +195,7 @@ export const Main = React.memo(() => {
               <DraggerUpload
                 placeholderText={t('main-upload_map')}
                 hintText={t('main-upload_map_hint')}
+                icon={<FileZipOutlined />}
                 accept={supportMapsAccept}
                 maxCount={1}
                 beforeUpload={beforeChooseMap}
@@ -202,6 +205,7 @@ export const Main = React.memo(() => {
                 <DraggerUpload
                   placeholderText={t('main-upload_bgm')}
                   hintText={t('main-upload_bgm_hint')}
+                  icon={<CustomerServiceFilled />}
                   accept="audio/*"
                   maxCount={1}
                   customRequest={(options) => handleUpload(EFileType.Bgm, options)}

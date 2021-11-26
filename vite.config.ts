@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 5277,
     proxy: {
       '/mania/api': {
         changeOrigin: true,

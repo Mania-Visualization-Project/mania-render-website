@@ -6,6 +6,7 @@ import { InboxOutlined } from '@ant-design/icons';
 export interface IDraggerUploadProps extends UploadProps {
   placeholderText?: ReactNode;
   hintText?: ReactNode;
+  icon?: ReactNode;
 }
 
 export const DraggerUpload = ({
@@ -14,6 +15,7 @@ export const DraggerUpload = ({
   action,
   placeholderText,
   hintText,
+  icon,
   ...restProps
 }: IDraggerUploadProps) => {
   return (
@@ -25,7 +27,7 @@ export const DraggerUpload = ({
       {...restProps}
     >
       <p className="ant-upload-drag-icon">
-        <InboxOutlined />
+        {icon || <InboxOutlined />}
       </p>
       <p className="ant-upload-text">
         {placeholderText}
