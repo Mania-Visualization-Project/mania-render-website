@@ -2,8 +2,10 @@ import { TI18nKeys } from './types';
 
 const resource: Record<TI18nKeys, string> = {
   'app-title': '骂娘渲染器',
-  'current-language': '简体中文',
   'app-settings': '设置',
+  'app-download': '下载',
+  'app-feedback': '反馈',
+  'current-language': '简体中文',
   'settings-fps': 'FPS',
   'settings-platform': '平台',
   'settings-speed': '下落速度（像素/帧）',
@@ -30,7 +32,7 @@ const resource: Record<TI18nKeys, string> = {
   'status-generate_status_unknown': '等待中',
   'status-generate_status_queue': '排队中',
   'status-generate_status_processing': '处理中',
-  'status-generate_generating_introduction': '**正在生成，请不要关闭窗口或浏览器**',
+  'status-generate_generating_introduction': '**正在生成，请不要关闭或刷新窗口和页面**',
   'status-generate_status_error': '出错啦！',
   'modal-generate_close_confirm_title': '您确定要关闭吗？',
   'modal-generate_close_confirm_content': '关闭窗口将会停止生成回放视频，您确定要关闭吗？',

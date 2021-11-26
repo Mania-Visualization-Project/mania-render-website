@@ -15,3 +15,7 @@ export const DEFAULT_GLOBAL_SETTINGS: IGlobalSettings = {
   ...DEFAULT_SETTINGS,
   language: ELanguage.Chinese,
 };
+
+export const CHINESE_DOWNLOAD_URL = 'https://github.com/Mania-Visualization-Project/Mania-Replay-Master/blob/master/README.md';
+export const ENGLISH_DOWNLOAD_URL = 'https://github.com/Mania-Visualization-Project/Mania-Replay-Master/blob/master/README_EN.md';
+export const FEEDBACK_URL = 'https://github.com/Mania-Visualization-Project/mania-render-website/issues';

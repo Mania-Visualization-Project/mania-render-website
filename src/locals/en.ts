@@ -3,6 +3,8 @@ import { TI18nKeys } from './types';
 const resource: Record<TI18nKeys, string> = {
   'app-title': 'Mania Render WebSite',
   'app-settings': 'Settings',
+  'app-download': 'Download',
+  'app-feedback': 'Feedback',
   'current-language': 'English',
   'settings-speed': 'Speed',
   'settings-fps': 'FPS',
@@ -30,7 +32,7 @@ const resource: Record<TI18nKeys, string> = {
   'status-generate_status_unknown': 'Waiting',
   'status-generate_status_queue': 'In Queue',
   'status-generate_status_processing': 'Processing',
-  'status-generate_generating_introduction': 'Generating...   Please do not close the dialog or browser.',
+  'status-generate_generating_introduction': 'Generating...   Please do not close or refresh the dialog and page.',
   'status-generate_status_error': 'Error!',
   'modal-generate_close_confirm_title': 'Are you sure to close?',
   'modal-generate_close_confirm_content': 'Close the dialog then the generating replay video progress will be abort, are you sure to close the dialog?',
