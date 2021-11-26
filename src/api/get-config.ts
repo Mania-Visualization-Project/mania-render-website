@@ -11,3 +11,13 @@ export const getConfig = async (): Promise<IGlobalSettings> => {
     ...(data || null),
   };
 };
+
+let configPromise: Promise<IGlobalSettings>;
+
+export const getConfigWithCache = () => {
+  if (!configPromise) {
+    configPromise = getConfig();
+  }
+
+  return configPromise;
+};

@@ -32,17 +32,20 @@ export const Navigator = () => {
         openKeys={[]}
       >
         <Menu.Item
+          key="title"
           className="nav-menu-item hide-in-mobile"
         >
           {t('app-title')}
         </Menu.Item>
         <Menu.Item
+          key="download"
           className="nav-menu-item"
           onClick={handleDownload}
         >
           {t('app-download')}
         </Menu.Item>
         <Menu.Item
+          key="feedback"
           className="nav-menu-item"
           onClick={() => openTab(FEEDBACK_URL)}
         >

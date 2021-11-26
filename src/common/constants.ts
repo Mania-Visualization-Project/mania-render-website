@@ -1,7 +1,7 @@
 import { EMalodyPlatform, IGlobalSettings, ISettings } from '../data/settings';
 import { ELanguage } from '../data/enums';
 
-export const DEFAULT_LANGUAGE = 'zh';
+export const DEFAULT_LANGUAGE = ELanguage.English;
 
 export const DEFAULT_SETTINGS: ISettings = {
   speed: 15,

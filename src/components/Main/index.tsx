@@ -40,7 +40,6 @@ const MAX_FILESIZE = 1024 * 1024 * 25;
  */
 export const Main = React.memo(() => {
   const { t } = useTranslation();
-  const localSettings = getLocalSettings();
 
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [disableUploadBgm, setDisableUploadBgm] = useState(true);
@@ -148,6 +147,7 @@ export const Main = React.memo(() => {
   const handleGenerate = useCallback(async () => {
     setShowGenerateModal(true);
     handleInitStatusData();
+    const localSettings = getLocalSettings();
 
     try {
       await generateVideo({
@@ -161,7 +161,7 @@ export const Main = React.memo(() => {
       cancelTask();
       setGenerateStatus(EGenerateQueryStatus.Error);
     }
-  }, [bgmId, cancelTask, generateVideo, handleInitStatusData, localSettings, mapId, replayId]);
+  }, [bgmId, cancelTask, generateVideo, handleInitStatusData, mapId, replayId]);
 
   const handleCancelGenerate = useCallback(() => {
     if (generateStatus === EGenerateQueryStatus.Finish || generateStatus === EGenerateQueryStatus.Error) {
