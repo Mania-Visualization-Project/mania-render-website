@@ -46,7 +46,7 @@ export const GenerateStatusPanel = ({
         >
           {status}
         </Descriptions.Item>
-        {queueCount > 0 || (
+        {queueCount > 0 && (
           <Descriptions.Item
             label={(
               <Typography.Text>
