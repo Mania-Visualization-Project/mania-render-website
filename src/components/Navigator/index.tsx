@@ -32,6 +32,11 @@ export const Navigator = () => {
         openKeys={[]}
       >
         <Menu.Item
+          className="nav-menu-item hide-in-mobile"
+        >
+          {t('app-title')}
+        </Menu.Item>
+        <Menu.Item
           className="nav-menu-item"
           onClick={handleDownload}
         >
@@ -51,7 +56,6 @@ export const Navigator = () => {
     <NavigatorContainer>
       <div className="title-content">
         <div className="pc-title">
-          {t('app-title')}
           {menu}
         </div>
         <div className="mobile-title">
