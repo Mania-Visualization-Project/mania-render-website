@@ -6,6 +6,7 @@ import { useTranslation } from '../../common/i18n';
 import { DEFAULT_SETTINGS } from '../../common/constants';
 import { getLocalSettings } from '../../common/local-settings';
 import { getFileExtension } from '../../utils/get-file-extension';
+import { __SHABI_SAFARI__ } from '../../utils/env';
 import { EFileType } from '../../data/enums';
 import { uploadFiles } from '../../api/upload-files';
 import { transformResponse } from '../../api/transform-response';
@@ -223,7 +224,7 @@ export const Main = React.memo(() => {
               placeholderText={t('main-upload_bgm')}
               hintText={t('main-upload_bgm_hint')}
               icon={<CustomerServiceFilled />}
-              accept="audio/*"
+              accept={`audio/*${__SHABI_SAFARI__ ? ', .ogg' : '' }`}
               maxCount={1}
               customRequest={(options) => handleUpload(EFileType.Bgm, options)}
             />
