@@ -5,6 +5,7 @@ import { CustomerServiceFilled, FileZipOutlined, PlaySquareOutlined } from '@ant
 import { useTranslation } from '../../common/i18n';
 import { DEFAULT_SETTINGS } from '../../common/constants';
 import { getLocalSettings } from '../../common/local-settings';
+import { useGlobalConfig } from '../../common/hooks/useGlobalConfig';
 import { getFileExtension } from '../../utils/get-file-extension';
 import { __SHABI_SAFARI__ } from '../../utils/env';
 import { EFileType } from '../../data/enums';
@@ -17,14 +18,14 @@ import { useGenerateTask } from './GenerateTask/useGenerateTask';
 import type { FinishHandler, ProcessingHandler, QueueHandler } from './GenerateTask/types';
 import { EGenerateQueryStatus } from './GenerateTask/types';
 import { MainContainer } from './styles';
-import { MainWrapper } from './MainWrapper';
+import { MainWrapperWithSettings } from './MainWrapperWithSettings';
 
 type CustomRequestOptions = Parameters<Exclude<UploadProps['customRequest'], undefined>>[0];
 type BeforeUploadHandler = Exclude<UploadProps['beforeUpload'], undefined>;
 
 const SUPPORT_REPLAY = ['.osr', '.mr'];
 const SUPPORT_MAP = ['.osz', '.osu', '.mcz', '.mc', '.zip'];
-const NEED_BGM_FILES_REGEX = /.(mc|osu)$/;
+const NEED_BGM_FILES_REGEX = /(mc|osu)$/;
 const supportMapsAccept = SUPPORT_MAP.join(',');
 const supportReplayAccept = SUPPORT_REPLAY.join(',');
 
@@ -40,6 +41,8 @@ const MAX_FILESIZE = 1024 * 1024 * 25;
  */
 export const Main = React.memo(() => {
   const { t } = useTranslation();
+
+  const { setConfig, config } = useGlobalConfig();
 
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [disableUploadBgm, setDisableUploadBgm] = useState(true);
@@ -77,6 +80,29 @@ export const Main = React.memo(() => {
     }
   }, []);
 
+  const beforeUpload = useCallback((file, type) => {
+    const chosenFile = file as File;
+
+    if (type === EFileType.Map) {
+      setMapName(chosenFile?.name || '');
+    } else if (type === EFileType.Replay) {
+      setReplayName(chosenFile?.name || '');
+      if (/osr$/.test(getFileExtension(chosenFile.name))) {
+        setConfig({
+          ...config,
+          disableSettingPlatform: true,
+        });
+      } else {
+        setConfig({
+          ...config,
+          disableSettingPlatform: false,
+        });
+      }
+    } else if (type === EFileType.Bgm) {
+      setAudioName(chosenFile?.name || '');
+    }
+  }, [config, setConfig]);
+
   const handleUpload = useCallback(async (type: EFileType, {
     file,
     onProgress,
@@ -99,21 +125,13 @@ export const Main = React.memo(() => {
       return false;
     }
 
-    const chosenFile = file as File;
-
-    if (type === EFileType.Map) {
-      setMapName(chosenFile?.name || '');
-    } else if (type === EFileType.Replay) {
-      setReplayName(chosenFile?.name || '');
-    } else if (type === EFileType.Bgm) {
-      setAudioName(chosenFile?.name || '');
-    }
+    beforeUpload(file, type);
 
     const uploadTask = uploadFiles({ type, file });
 
     uploadTask.onprogress = (event) => {
       const { loaded, total } = event;
-      const percent = Math.floor(loaded / total);
+      const percent = Math.round(loaded / total * 100);
       onProgress?.({ ...event, percent });
     };
 
@@ -128,7 +146,7 @@ export const Main = React.memo(() => {
     }
 
     return false;
-  }, [handleSetId, t]);
+  }, [beforeUpload, handleSetId, t]);
 
   const onProcessing = useCallback<ProcessingHandler>((progress) => {
     setQueueCount(0);
@@ -215,7 +233,7 @@ export const Main = React.memo(() => {
         size={24}
         direction="vertical"
       >
-        <MainWrapper>
+        <MainWrapperWithSettings>
           <DraggerUpload
             placeholderText={t('main-upload_replay_placeholder')}
             hintText={t('main-upload_replay_placeholder_hint')}
@@ -243,7 +261,7 @@ export const Main = React.memo(() => {
               customRequest={(options) => handleUpload(EFileType.Bgm, options)}
             />
           )}
-        </MainWrapper>
+        </MainWrapperWithSettings>
         <Space
           className="btn-wrapper"
           size={24}

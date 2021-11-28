@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Row, Space } from 'antd';
 import { SettingsPanel } from '../Settings';
 
-export const MainWrapper: React.FC = ({ children }) => {
+export const MainWrapperWithSettings: React.FC = ({ children }) => {
   return (
     <Row>
       <Col

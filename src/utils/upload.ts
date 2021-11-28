@@ -1,4 +1,5 @@
 import { IResponse } from '../api/types';
+import { devLog } from './dev-log';
 
 export type Method = 'PUT' | 'POST' | 'PATCH';
 
@@ -97,6 +98,7 @@ export class UploadTask {
 
       if (typeof this._onprogress === 'function') {
         xhr.upload.onprogress = (...args) => {
+          devLog('[Upload Task - onprogress]', ...args);
           this._onprogress && this._onprogress(...args);
         };
       }

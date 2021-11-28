@@ -8,12 +8,14 @@ import type { ISettings } from '../../data/settings';
 import { EMalodyPlatform } from '../../data/settings';
 import { getConfigWithCache } from '../../api/get-config';
 import { ErrorView } from '../ErrorToast';
+import { useGlobalConfig } from '../../common/hooks/useGlobalConfig';
 
 export const SettingsForm = () => {
   const { t } = useTranslation();
 
   const [form] = Form.useForm<ISettings>();
   const isChangeRef = useRef(false);
+  const { config } = useGlobalConfig();
 
   useEffect(() => {
     const localSettings = getLocalSettings();
@@ -62,16 +64,18 @@ export const SettingsForm = () => {
       >
         <InputNumber />
       </Form.Item>
-      <Form.Item
-        label={t('settings-platform')}
-        name="malody_platform"
-        wrapperCol={{ span: 24 }}
-      >
-        <Radio.Group>
-          <Radio value={EMalodyPlatform.PE}>{EMalodyPlatform.PE}</Radio>
-          <Radio value={EMalodyPlatform.PC}>{EMalodyPlatform.PC}</Radio>
-        </Radio.Group>
-      </Form.Item>
+      {!config.disableSettingPlatform && (
+        <Form.Item
+          label={t('settings-platform')}
+          name="malody_platform"
+          wrapperCol={{ span: 24 }}
+        >
+          <Radio.Group>
+            <Radio value={EMalodyPlatform.PE}>{EMalodyPlatform.PE}</Radio>
+            <Radio value={EMalodyPlatform.PC}>{EMalodyPlatform.PC}</Radio>
+          </Radio.Group>
+        </Form.Item>
+      )}
       <Form.Item
         label={t('settings-video_width')}
         name="width"
