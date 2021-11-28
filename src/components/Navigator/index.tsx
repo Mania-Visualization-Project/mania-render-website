@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { Dropdown, Menu, Space } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import { i18n, useTranslation } from '../../common/i18n';
-import { CHINESE_DOWNLOAD_URL, ENGLISH_DOWNLOAD_URL, FEEDBACK_URL } from '../../common/constants';
+import { useTranslation } from '../../common/i18n';
+import { DOWNLOAD_ZIP_FILENAME, DOWNLOAD_ZIP_URL, FEEDBACK_URL } from '../../common/constants';
+import { downloadFile } from '../../utils/download-file';
 import { openTab } from '../../utils/open-tab';
-import { ELanguage } from '../../data/enums';
 import { LanguageSwitch } from '../LanguageSwitch';
 import { SettingsButton } from '../Settings';
 import { NavigatorContainer } from './styles';
@@ -12,12 +12,7 @@ import { NavigatorContainer } from './styles';
 export const Navigator = () => {
   const { t } = useTranslation();
   const handleDownload = useCallback(() => {
-    const language = i18n.language as ELanguage;
-    if (language === ELanguage.Chinese) {
-      openTab(CHINESE_DOWNLOAD_URL);
-    } else {
-      openTab(ENGLISH_DOWNLOAD_URL);
-    }
+    downloadFile(DOWNLOAD_ZIP_URL, DOWNLOAD_ZIP_FILENAME);
   }, []);
 
   const menu = useMemo(() => {
