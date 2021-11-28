@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { omit } from 'lodash';
 import { Form, InputNumber, Radio } from 'antd';
 import { DEFAULT_SETTINGS } from '../../common/constants';
@@ -13,14 +13,20 @@ export const SettingsForm = () => {
   const { t } = useTranslation();
 
   const [form] = Form.useForm<ISettings>();
+  const isChangeRef = useRef(false);
 
   useEffect(() => {
     const localSettings = getLocalSettings();
     if (!localSettings) {
       getConfigWithCache().then((res) => {
-        const settings = omit(res, 'language');
-        setLocalSettings(settings);
-        form.setFieldsValue(settings);
+        /**
+         * 当用户手动更改过设置，就不要加载远端拉下来的设置了
+         */
+        if (!isChangeRef.current) {
+          const settings = omit(res, 'language');
+          setLocalSettings(settings);
+          form.setFieldsValue(settings);
+        }
       }).catch((err: any) => {
         ErrorView.toast(err);
       });
@@ -28,6 +34,7 @@ export const SettingsForm = () => {
   }, [form]);
 
   const handleChange = useCallback(() => {
+    isChangeRef.current = true;
     const settings = form.getFieldsValue();
     setLocalSettings(settings);
   }, [form]);
