@@ -45,7 +45,6 @@ export const Main = React.memo(() => {
   const { setConfig, config } = useGlobalConfig();
 
   const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const [disableUploadBgm, setDisableUploadBgm] = useState(true);
   const [disableGenerate, setDisableGenerate] = useState(true);
   const [isNeedUploadBgm, setIsNeedUploadBgm] = useState(false);
 
@@ -80,29 +79,6 @@ export const Main = React.memo(() => {
     }
   }, []);
 
-  const beforeUpload = useCallback((file, type) => {
-    const chosenFile = file as File;
-
-    if (type === EFileType.Map) {
-      setMapName(chosenFile?.name || '');
-    } else if (type === EFileType.Replay) {
-      setReplayName(chosenFile?.name || '');
-      if (/osr$/.test(getFileExtension(chosenFile.name))) {
-        setConfig({
-          ...config,
-          disableSettingPlatform: true,
-        });
-      } else {
-        setConfig({
-          ...config,
-          disableSettingPlatform: false,
-        });
-      }
-    } else if (type === EFileType.Bgm) {
-      setAudioName(chosenFile?.name || '');
-    }
-  }, [config, setConfig]);
-
   const handleUpload = useCallback(async (type: EFileType, {
     file,
     onProgress,
@@ -125,8 +101,6 @@ export const Main = React.memo(() => {
       return false;
     }
 
-    beforeUpload(file, type);
-
     const uploadTask = uploadFiles({ type, file });
 
     uploadTask.onprogress = (event) => {
@@ -146,7 +120,7 @@ export const Main = React.memo(() => {
     }
 
     return false;
-  }, [beforeUpload, handleSetId, t]);
+  }, [handleSetId, t]);
 
   const onProcessing = useCallback<ProcessingHandler>((progress) => {
     setQueueCount(0);
@@ -166,14 +140,42 @@ export const Main = React.memo(() => {
 
   const { generateVideo, downloadVideo, cancelTask } = useGenerateTask({ onProcessing, onQueue, onFinish });
 
-  const beforeChooseMap = useCallback<BeforeUploadHandler>((file) => {
+  const beforeUploadMap = useCallback<BeforeUploadHandler>((file) => {
     const filename = file.name;
     const fileExt = getFileExtension(filename);
+
+    setMapName(filename || '');
+
     if (NEED_BGM_FILES_REGEX.test(fileExt)) {
       setIsNeedUploadBgm(true);
     } else {
       setIsNeedUploadBgm(false);
+      setAudioName('');
     }
+  }, []);
+
+  const beforeUploadReplay = useCallback<BeforeUploadHandler>((file) => {
+    const filename = file.name;
+    const fileExt = getFileExtension(filename);
+
+    setReplayName(filename);
+
+    if (/osr$/.test(fileExt)) {
+      setConfig({
+        ...config,
+        disableSettingPlatform: true,
+      });
+    } else {
+      setConfig({
+        ...config,
+        disableSettingPlatform: false,
+      });
+    }
+  }, [config, setConfig]);
+
+  const beforeUploadBgm = useCallback<BeforeUploadHandler>((file) => {
+    const filename = file.name;
+    setAudioName(filename);
   }, []);
 
   const handleGenerate = useCallback(async () => {
@@ -222,10 +224,6 @@ export const Main = React.memo(() => {
     }
   }, [bgmId, isNeedUploadBgm, mapId, replayId]);
 
-  useEffect(() => {
-    setDisableUploadBgm(!isNeedUploadBgm);
-  }, [isNeedUploadBgm]);
-
   return (
     <MainContainer>
       <Space
@@ -240,6 +238,7 @@ export const Main = React.memo(() => {
             icon={<PlaySquareOutlined />}
             accept={supportReplayAccept}
             maxCount={1}
+            beforeUpload={beforeUploadReplay}
             customRequest={(options) => handleUpload(EFileType.Replay, options)}
           />
           <DraggerUpload
@@ -248,16 +247,17 @@ export const Main = React.memo(() => {
             icon={<FileZipOutlined />}
             accept={supportMapsAccept}
             maxCount={1}
-            beforeUpload={beforeChooseMap}
+            beforeUpload={beforeUploadMap}
             customRequest={(options) => handleUpload(EFileType.Map, options)}
           />
-          {!disableUploadBgm && (
+          {isNeedUploadBgm && (
             <DraggerUpload
               placeholderText={t('main-upload_bgm')}
               hintText={t('main-upload_bgm_hint')}
               icon={<CustomerServiceFilled />}
               accept={`audio/*${__SHABI_SAFARI__ ? ', .ogg' : '' }`}
               maxCount={1}
+              beforeUpload={beforeUploadBgm}
               customRequest={(options) => handleUpload(EFileType.Bgm, options)}
             />
           )}
