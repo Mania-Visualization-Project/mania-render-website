@@ -24,7 +24,7 @@ type BeforeUploadHandler = Exclude<UploadProps['beforeUpload'], undefined>;
 
 const SUPPORT_REPLAY = ['.osr', '.mr'];
 const SUPPORT_MAP = ['.osz', '.osu', '.mcz', '.mc', '.zip'];
-const NEED_BGM_FILES_REGEX = /(mc|osu)/;
+const NEED_BGM_FILES_REGEX = /.(mc|osu)$/;
 const supportMapsAccept = SUPPORT_MAP.join(',');
 const supportReplayAccept = SUPPORT_REPLAY.join(',');
 
