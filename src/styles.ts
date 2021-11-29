@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  
   .mr-app {
     width: 100%;
 
@@ -17,7 +18,14 @@ export const Container = styled.div`
     }
 
     .app-content {
+      
+    }
 
+    .app-footer {
+      padding: 5px;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
     }
   }
 `;
