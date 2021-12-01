@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
-import { round } from 'lodash';
-import { Button, Descriptions, Progress, Space, Typography } from 'antd';
+import { Button, Descriptions, Space, Typography } from 'antd';
 import { useTranslation } from '../../../common/i18n';
-import { convertGenerateStatus2i18n } from '../../../common/converters/convert-generate-status2i18n';
 import { getLocalSettings } from '../../../common/local-settings';
 import { getFileExtension } from '../../../utils/get-file-extension';
 import { getDestructArrayInCondition } from '../../../utils/get-destruct-thing-in-condition';
 import { EGame } from '../../../data/enums';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
+import { GenerateProgressPanel } from './GenerateProgressPanel';
 import { GenerateStatusPanelWrapper } from './styles';
 
 export interface GenerateStatusPanelProps {
@@ -109,27 +108,18 @@ export const GenerateStatusPanel = ({
   const descriptionList = useMemo(() => {
     return [
       {
-        label: t('status-current_status'),
-        content: t(convertGenerateStatus2i18n(status)),
-      },
-      ...getDestructArrayInCondition(queueCount > 0, {
-        label: t('status-current_in_queue'),
-        content: queueCount,
-      }),
-      {
+        key: 'settings',
         label: t('status-current_settings'),
         content: currentSettingsString,
       },
       {
+        key: 'progress',
         label: t('status-generate_progress_label'),
         content: (
-          <Progress
-            type="circle"
-            percent={round(percent, 2)}
-            strokeColor={{
-              '0%': '#108ee9',
-              '100%': '#87d068',
-            }}
+          <GenerateProgressPanel
+            percent={percent}
+            status={status}
+            queueCount={queueCount}
           />
         ),
       },
@@ -168,11 +158,11 @@ export const GenerateStatusPanel = ({
           width: 128,
         }}
       >
-        {descriptionList.map(({ content, label }) => {
+        {descriptionList.map(({ content, label, key }) => {
           return (
             <Descriptions.Item
               className="word-pre-wrap"
-              key={content}
+              key={key}
               label={(
                 <Typography.Text>
                   {label}
