@@ -7,6 +7,16 @@ export interface IUploadResponseData {
   file_id: string;
 }
 
+export interface IUploadTaskCreateOptions {
+  url: string;
+  data: any;
+  method?: Method;
+  config?: {
+    timeout?: number;
+    headers?: Record<string, string>;
+  };
+}
+
 /**
  * 上传任务
  */
@@ -34,15 +44,7 @@ export class UploadTask {
     this._timeout = 20 * 60 * 1000;
   }
 
-  public static create(options: {
-    url: string,
-    data: any;
-    method?: Method,
-    config?: {
-      timeout?: number;
-      headers?: Record<string, string>;
-    },
-  }) {
+  public static create(options: IUploadTaskCreateOptions) {
     const task = new UploadTask();
     task.url = options.url;
     options?.data !== undefined && (task.data = options.data);

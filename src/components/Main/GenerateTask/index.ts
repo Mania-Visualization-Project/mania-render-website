@@ -1,23 +1,16 @@
-import axios from 'axios';
 import { DEFAULT_SETTINGS } from '../../../common/constants';
 import { ISettings } from '../../../data/settings';
 import { downloadFile } from '../../../utils/download-file';
 import { devLog } from '../../../utils/dev-log';
-import { transformResponse } from '../../../api/transform-response';
-import { IResponse } from '../../../api/types';
-import {
-  EGenerateQueryStatus,
+import type { IGenerateParams, IQueryResponseData } from '../../../api/generate';
+import { generateVideo, queueTask } from '../../../api/generate';
+import type {
   FinishHandler,
-  IGenerateParams,
-  IGenerateResponseData,
-  IGenerateTaskParams,
-  IQueryResponseData,
   ProcessingHandler,
   QueueHandler,
+  IGenerateTaskParams,
 } from './types';
-
-// TODO: move the api request to /api
-const httpInstance = axios.create();
+import { EGenerateQueryStatus } from './types';
 
 export class GenerateTask {
   static readonly QUERY_INTERVAL = 1000;
@@ -94,12 +87,8 @@ export class GenerateTask {
       extra: this._extra,
     };
 
-    const res = await httpInstance.post<IResponse<IGenerateResponseData>>(
-      '/mania/api/generate',
-      params,
-    );
+    const data = await generateVideo(params);
 
-    const data = transformResponse<IGenerateResponseData>(res.data);
     this._task_id = data.task_id;
     devLog('[start generate]', data.task_id);
   }
@@ -158,11 +147,7 @@ export class GenerateTask {
   }
 
   private async query(): Promise<IQueryResponseData> {
-    const res = await httpInstance.get<IResponse<IQueryResponseData>>(
-      `/mania/api/query?task_id=${this._task_id}`,
-    );
-
-    const data = transformResponse<IQueryResponseData>(res.data);
+    const data = await queueTask(this._task_id);
 
     if (!data) {
       devLog('[query res error]', data);

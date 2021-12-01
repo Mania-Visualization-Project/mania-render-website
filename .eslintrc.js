@@ -66,6 +66,7 @@ module.exports = {
       'ignoreRestSiblings': false,
     }],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/member-delimiter-style': 'error',
     'no-multi-spaces': ['error', {
       'ignoreEOLComments': true,
     }],

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { round } from 'lodash';
 import { Button, Descriptions, Progress, Space, Typography } from 'antd';
 import { useTranslation } from '../../../common/i18n';
 import { convertGenerateStatus2i18n } from '../../../common/converters/convert-generate-status2i18n';
+import { getDestructArrayInCondition } from '../../../utils/get-destruct-thing-in-condition';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateStatusPanelWrapper } from './styles';
 
@@ -13,6 +14,9 @@ export interface GenerateStatusPanelProps {
   audioName: string;
   mapName: string;
   replayName: string;
+  platform: string;
+  isReplayMatch: boolean;
+  isAudioMatch: boolean;
   finished: boolean;
   onDownload: () => void;
 }
@@ -27,6 +31,8 @@ export interface GenerateStatusPanelProps {
  * @param audioName
  * @param mapName
  * @param replayName
+ * @param isAudioMatch
+ * @param isReplayMatch
  * @constructor
  */
 export const GenerateStatusPanel = ({
@@ -38,8 +44,39 @@ export const GenerateStatusPanel = ({
   audioName,
   mapName,
   replayName,
+  isAudioMatch,
+  isReplayMatch,
 }: GenerateStatusPanelProps) => {
   const { t } = useTranslation();
+
+  const descList = useMemo(() => {
+    return [
+      {
+        label: t('status-current_file_name_label'),
+        content: replayName,
+        type: isReplayMatch ? undefined : 'danger',
+      },
+      {
+        label: t('status-current_map_name_label'),
+        content: mapName,
+      },
+      ...getDestructArrayInCondition(!!audioName, {
+        label: t('status-current_audio_name_label'),
+        content: audioName,
+        type: isAudioMatch ? undefined : 'danger',
+      }),
+      ...getDestructArrayInCondition(!isAudioMatch, {
+        label: t('status-current_warning_label'),
+        content: t('status-current_warning_audio_not_match'),
+        type: 'danger',
+      }),
+      ...getDestructArrayInCondition(!isReplayMatch, {
+        label: t('status-current_warning_label'),
+        content: t('status-current_warning_replay_not_match'),
+        type: 'danger',
+      }),
+    ];
+  }, [audioName, isAudioMatch, isReplayMatch, mapName, replayName, t]);
 
   return (
     <GenerateStatusPanelWrapper>
@@ -50,26 +87,18 @@ export const GenerateStatusPanel = ({
       )}
       <Typography.Paragraph>
         <ul>
-          <li>
-            <Typography.Text strong>
-              {t('status-current_file_name_label')}&nbsp;
-            </Typography.Text>
-            {replayName}
-          </li>
-          <li>
-            <Typography.Text strong>
-              {t('status-current_map_name_label')}&nbsp;
-            </Typography.Text>
-            {mapName}
-          </li>
-          {audioName && (
-            <li>
-              <Typography.Text strong>
-                {t('status-current_audio_name_label')}&nbsp;
-              </Typography.Text>
-              {audioName}
-            </li>
-          )}
+          {descList.map((item) => {
+            return (
+              <li key={item.label}>
+                <Typography.Text strong type={item?.type as any}>
+                  {item.label}&nbsp;
+                </Typography.Text>
+                <Typography.Text type={item?.type as any}>
+                  {item.content}
+                </Typography.Text>
+              </li>
+            );
+          })}
         </ul>
       </Typography.Paragraph>
       <Descriptions

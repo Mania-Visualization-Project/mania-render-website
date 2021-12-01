@@ -9,16 +9,17 @@ import { useGlobalConfig } from '../../common/hooks/useGlobalConfig';
 import { getFileExtension } from '../../utils/get-file-extension';
 import { __SHABI_SAFARI__ } from '../../utils/env';
 import { EFileType } from '../../data/enums';
+import { EMalodyPlatform } from '../../data/settings';
 import { uploadFiles } from '../../api/upload-files';
 import { transformResponse } from '../../api/transform-response';
 import { ErrorView } from '../ErrorToast';
 import { DraggerUpload } from '../DraggerUpload';
-import { GenerateStatusPanel } from './GenerateStatusPanel';
 import { useGenerateTask } from './GenerateTask/useGenerateTask';
 import type { FinishHandler, ProcessingHandler, QueueHandler } from './GenerateTask/types';
 import { EGenerateQueryStatus } from './GenerateTask/types';
 import { MainContainer } from './styles';
 import { MainWrapperWithSettings } from './MainWrapperWithSettings';
+import { GenerateStatusModal } from './GenerateStatus';
 
 type CustomRequestOptions = Parameters<Exclude<UploadProps['customRequest'], undefined>>[0];
 type BeforeUploadHandler = Exclude<UploadProps['beforeUpload'], undefined>;
@@ -275,30 +276,20 @@ export const Main = React.memo(() => {
             {t('btn-generate')}
           </Button>
         </Space>
-        <Modal
+        <GenerateStatusModal
           visible={showGenerateModal}
-          centered
-          bodyStyle={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          maskClosable={false}
-          title={generateStatus === EGenerateQueryStatus.Error ? t('status-generate_status_error') : t('upload-modal_title')}
-          onCancel={handleCancelGenerate}
-          footer={null}
-        >
-          <GenerateStatusPanel
-            percent={generatePercent}
-            status={generateStatus}
-            queueCount={queueCount}
-            finished={generatePercent === 100}
-            onDownload={downloadVideo}
-            replayName={replayName}
-            mapName={mapName}
-            audioName={audioName}
-          />
-        </Modal>
+          generateStatus={generateStatus}
+          generatePercent={generatePercent}
+          onCancelGenerate={handleCancelGenerate}
+          queueCount={queueCount}
+          onDownload={downloadVideo}
+          replayName={replayName}
+          mapName={mapName}
+          audioName={audioName}
+          platform={EMalodyPlatform.PC}
+          isMapMatch={true}
+          isAudioMatch={true}
+        />
       </Space>
     </MainContainer>
   );

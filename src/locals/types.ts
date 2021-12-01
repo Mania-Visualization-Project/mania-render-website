@@ -26,6 +26,9 @@ export type TI18nKeys =
   'status-current_file_name_label' |
   'status-current_audio_name_label' |
   'status-current_map_name_label' |
+  'status-current_warning_label' |
+  'status-current_warning_replay_not_match' |
+  'status-current_warning_audio_not_match' |
   'status-generate_success' |
   'status-download_button' |
   'status-generate_progress_label' |
