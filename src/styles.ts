@@ -18,7 +18,7 @@ export const Container = styled.div`
     }
 
     .app-content {
-      
+      padding-bottom: 100px;
     }
 
     .app-footer {
