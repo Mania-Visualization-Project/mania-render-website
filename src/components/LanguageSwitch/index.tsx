@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react';
 import { Dropdown, Menu } from 'antd';
 import { changeLanguage, useTranslation } from '../../common/i18n';
 import { ELanguage } from '../../data/enums';
-
 import './styles.less';
 
 export const LanguageSwitch = React.memo(() => {
@@ -27,9 +26,12 @@ export const LanguageSwitch = React.memo(() => {
   return (
     <Dropdown
       overlay={menu}
+      trigger={['click', 'hover']}
       overlayClassName="language-switch-overlay"
     >
-      <a className="language-switch-children">{t('current-language')}</a>
+      <div>
+        <a className="language-switch-children">{t('current-language')}</a>
+      </div>
     </Dropdown>
   );
 });

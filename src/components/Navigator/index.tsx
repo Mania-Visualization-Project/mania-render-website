@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { Dropdown, Menu, Space } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
+import { DOWNLOAD_ZIP_FILENAME, DOWNLOAD_ZIP_URL } from '../../common/constants';
 import { useTranslation } from '../../common/i18n';
-import { DOWNLOAD_ZIP_FILENAME, DOWNLOAD_ZIP_URL, FEEDBACK_URL } from '../../common/constants';
 import { downloadFile } from '../../utils/download-file';
-import { openTab } from '../../utils/open-tab';
 import { LanguageSwitch } from '../LanguageSwitch';
+import { FeedBack } from '../FeedBack';
 import { SettingsButton } from '../Settings';
 import { NavigatorContainer } from './styles';
 
@@ -42,9 +42,9 @@ export const Navigator = () => {
         <Menu.Item
           key="feedback"
           className="nav-menu-item"
-          onClick={() => openTab(FEEDBACK_URL)}
         >
-          {t('app-feedback')}
+          <FeedBack />
+          {/*{t('app-feedback')}*/}
         </Menu.Item>
       </Menu>
     );

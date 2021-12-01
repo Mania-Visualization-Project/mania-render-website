@@ -8,7 +8,7 @@ export const Container = styled.div`
     .app-header {
       position: fixed;
       width: 100%;
-      z-index: 9999;
+      z-index: 101;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
