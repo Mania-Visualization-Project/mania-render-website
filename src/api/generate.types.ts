@@ -36,8 +36,8 @@ type IQueryResponseBaseData =
 
 interface IQueryResponseExtraData {
   __extra__?: {
-    is_music_match?: boolean;
-    is_replay_match?: boolean;
+    is_music_mismatch?: boolean;
+    is_replay_mismatch?: boolean;
   };
 }
 

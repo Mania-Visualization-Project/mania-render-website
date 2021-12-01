@@ -8,3 +8,9 @@ export enum ELanguage {
   Chinese = 'zh',
   English = 'en',
 }
+
+export enum EGame {
+  Osu = 'osu',
+  Malody = 'Malody',
+  Unknown = 'Unknown',
+}

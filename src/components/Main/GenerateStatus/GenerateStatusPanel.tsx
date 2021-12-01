@@ -3,7 +3,10 @@ import { round } from 'lodash';
 import { Button, Descriptions, Progress, Space, Typography } from 'antd';
 import { useTranslation } from '../../../common/i18n';
 import { convertGenerateStatus2i18n } from '../../../common/converters/convert-generate-status2i18n';
+import { getLocalSettings } from '../../../common/local-settings';
+import { getFileExtension } from '../../../utils/get-file-extension';
 import { getDestructArrayInCondition } from '../../../utils/get-destruct-thing-in-condition';
+import { EGame } from '../../../data/enums';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateStatusPanelWrapper } from './styles';
 
@@ -14,7 +17,6 @@ export interface GenerateStatusPanelProps {
   audioName: string;
   mapName: string;
   replayName: string;
-  platform: string;
   isReplayMatch: boolean;
   isAudioMatch: boolean;
   finished: boolean;
@@ -48,12 +50,48 @@ export const GenerateStatusPanel = ({
   isReplayMatch,
 }: GenerateStatusPanelProps) => {
   const { t } = useTranslation();
+  const settings = getLocalSettings();
 
-  const descList = useMemo(() => {
+  const game = useMemo(() => {
+    const fileExtension = getFileExtension(replayName);
+
+    if (/osr/.test(fileExtension)) {
+      return EGame.Osu;
+    } else if (/mr/.test(fileExtension)) {
+      return EGame.Malody;
+    } else {
+      return EGame.Unknown;
+    }
+  }, [replayName]);
+
+  const currentSettingsString = useMemo(() => {
+    if (!settings) {
+      return '';
+    }
+
+    const { speed, fps, malody_platform, height, width } = settings;
+
+    const baseStr = [
+      [t('settings-speed'), speed],
+      [t('settings-fps'), fps],
+      [t('settings-video_width'), width],
+      [t('settings-video_height'), height],
+    ].map((item) => item.join(' -- ')).join('\n');
+
+    if (game === EGame.Osu) {
+      return `${t('settings-platform')} -- osu!mania\n${baseStr}`;
+    } else if (game === EGame.Malody){
+      return `${t('settings-platform')} -- Malody ${malody_platform}\n${baseStr}`;
+    } else {
+      return '';
+    }
+  }, [game, settings, t]);
+
+  const infoList = useMemo(() => {
     return [
       {
         label: t('status-current_file_name_label'),
-        content: replayName,
+        content: `${replayName} (${t('status-current_warning_replay_not_match')})`,
         type: isReplayMatch ? undefined : 'danger',
       },
       {
@@ -62,34 +100,56 @@ export const GenerateStatusPanel = ({
       },
       ...getDestructArrayInCondition(!!audioName, {
         label: t('status-current_audio_name_label'),
-        content: audioName,
+        content: `${audioName} (${t('status-current_warning_audio_not_match')})`,
         type: isAudioMatch ? undefined : 'danger',
-      }),
-      ...getDestructArrayInCondition(!isAudioMatch, {
-        label: t('status-current_warning_label'),
-        content: t('status-current_warning_audio_not_match'),
-        type: 'danger',
-      }),
-      ...getDestructArrayInCondition(!isReplayMatch, {
-        label: t('status-current_warning_label'),
-        content: t('status-current_warning_replay_not_match'),
-        type: 'danger',
       }),
     ];
   }, [audioName, isAudioMatch, isReplayMatch, mapName, replayName, t]);
 
+  const descriptionList = useMemo(() => {
+    return [
+      {
+        label: t('status-current_status'),
+        content: t(convertGenerateStatus2i18n(status)),
+      },
+      ...getDestructArrayInCondition(queueCount > 0, {
+        label: t('status-current_in_queue'),
+        content: queueCount,
+      }),
+      {
+        label: t('status-current_settings'),
+        content: currentSettingsString,
+      },
+      {
+        label: t('status-generate_progress_label'),
+        content: (
+          <Progress
+            type="circle"
+            percent={round(percent, 2)}
+            strokeColor={{
+              '0%': '#108ee9',
+              '100%': '#87d068',
+            }}
+          />
+        ),
+      },
+    ];
+  }, [currentSettingsString, percent, queueCount, status, t]);
+
   return (
     <GenerateStatusPanelWrapper>
       {!finished && status !== EGenerateQueryStatus.Error && (
-        <Typography.Text type="danger" strong>
-          {t('status-generate_generating_introduction')}
-        </Typography.Text>
+        <Typography.Paragraph>
+          <Typography.Text type="danger" strong>
+            {t('status-generate_generating_introduction')}
+          </Typography.Text>
+        </Typography.Paragraph>
       )}
       <Typography.Paragraph>
         <ul>
-          {descList.map((item) => {
+          {infoList.map((item) => {
             return (
-              <li key={item.label}>
+              <li key={item.content}>
                 <Typography.Text strong type={item?.type as any}>
                   {item.label}&nbsp;
                 </Typography.Text>
@@ -104,43 +164,25 @@ export const GenerateStatusPanel = ({
       <Descriptions
         bordered
         column={1}
+        labelStyle={{
+          width: 128,
+        }}
       >
-        <Descriptions.Item
-          label={(
-            <Typography.Text>
-              {t('status-current_status')}
-            </Typography.Text>
-          )}
-        >
-          {t(convertGenerateStatus2i18n(status))}
-        </Descriptions.Item>
-        {queueCount > 0 && (
-          <Descriptions.Item
-            label={(
-              <Typography.Text>
-                {t('status-current_in_queue')}
-              </Typography.Text>
-            )}
-          >
-            {queueCount}
-          </Descriptions.Item>
-        )}
-        <Descriptions.Item
-          label={(
-            <Typography.Text>
-              {t('status-generate_progress_label')}
-            </Typography.Text>
-          )}
-        >
-          <Progress
-            type="circle"
-            percent={round(percent, 2)}
-            strokeColor={{
-              '0%': '#108ee9',
-              '100%': '#87d068',
-            }}
-          />
-        </Descriptions.Item>
+        {descriptionList.map(({ content, label }) => {
+          return (
+            <Descriptions.Item
+              className="word-pre-wrap"
+              key={content}
+              label={(
+                <Typography.Text>
+                  {label}
+                </Typography.Text>
+              )}
+            >
+              {content}
+            </Descriptions.Item>
+          );
+        })}
       </Descriptions>
       {finished && (
         <Space

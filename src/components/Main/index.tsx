@@ -9,17 +9,16 @@ import { useGlobalConfig } from '../../common/hooks/useGlobalConfig';
 import { getFileExtension } from '../../utils/get-file-extension';
 import { __SHABI_SAFARI__ } from '../../utils/env';
 import { EFileType } from '../../data/enums';
-import { EMalodyPlatform } from '../../data/settings';
 import { uploadFiles } from '../../api/upload-files';
 import { transformResponse } from '../../api/transform-response';
 import { ErrorView } from '../ErrorToast';
 import { DraggerUpload } from '../DraggerUpload';
 import { useGenerateTask } from './GenerateTask/useGenerateTask';
-import type { FinishHandler, ProcessingHandler, QueueHandler } from './GenerateTask/types';
+import type { ExtraHandler, FinishHandler, ProcessingHandler, QueueHandler } from './GenerateTask/types';
 import { EGenerateQueryStatus } from './GenerateTask/types';
-import { MainContainer } from './styles';
 import { MainWrapperWithSettings } from './MainWrapperWithSettings';
 import { GenerateStatusModal } from './GenerateStatus';
+import { MainContainer } from './styles';
 
 type CustomRequestOptions = Parameters<Exclude<UploadProps['customRequest'], undefined>>[0];
 type BeforeUploadHandler = Exclude<UploadProps['beforeUpload'], undefined>;
@@ -52,6 +51,8 @@ export const Main = React.memo(() => {
   const [replayName, setReplayName] = useState<string>('');
   const [mapName, setMapName] = useState<string>('');
   const [audioName, setAudioName] = useState<string>('');
+  const [isAudioMatch, setIsAudioMatch] = useState(false);
+  const [isReplayMatch, setIsReplayMatch] = useState(false);
 
   const [mapId, setMapId] = useState<string>('');
   const [bgmId, setBgmId] = useState<string>('');
@@ -139,7 +140,19 @@ export const Main = React.memo(() => {
     setGeneratePercent(100);
   }, []);
 
-  const { generateVideo, downloadVideo, cancelTask } = useGenerateTask({ onProcessing, onQueue, onFinish });
+  const handleExtra = useCallback<ExtraHandler>((extra) => {
+    if (extra) {
+      setIsAudioMatch(!extra.is_music_mismatch);
+      setIsReplayMatch(!extra.is_replay_mismatch);
+    }
+  }, []);
+
+  const { generateVideo, downloadVideo, cancelTask } = useGenerateTask({
+    onProcessing,
+    onQueue,
+    onFinish,
+    handleExtra,
+  });
 
   const beforeUploadMap = useCallback<BeforeUploadHandler>((file) => {
     const filename = file.name;
@@ -210,6 +223,7 @@ export const Main = React.memo(() => {
       content: t('modal-generate_close_confirm_content'),
       okText: t('modal-generate_close_confirm_ok_text'),
       cancelText: t('modal-generate_close_confirm_cancel_text'),
+      centered: true,
       onOk() {
         setShowGenerateModal(false);
         cancelTask();
@@ -286,9 +300,8 @@ export const Main = React.memo(() => {
           replayName={replayName}
           mapName={mapName}
           audioName={audioName}
-          platform={EMalodyPlatform.PC}
-          isMapMatch={true}
-          isAudioMatch={true}
+          isReplayMatch={isReplayMatch}
+          isAudioMatch={isAudioMatch}
         />
       </Space>
     </MainContainer>

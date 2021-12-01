@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Modal, ModalProps } from 'antd';
 import { useTranslation } from '../../../common/i18n';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateStatusPanel } from './GenerateStatusPanel';
+import './styles.less';
 
 export interface GenerateStatusModalProps extends ModalProps{
   generateStatus: EGenerateQueryStatus;
@@ -13,8 +14,7 @@ export interface GenerateStatusModalProps extends ModalProps{
   replayName: string;
   mapName: string;
   audioName: string;
-  platform: string;
-  isMapMatch: boolean;
+  isReplayMatch: boolean;
   isAudioMatch: boolean;
 }
 
@@ -28,30 +28,32 @@ export const GenerateStatusModal = ({
   replayName,
   mapName,
   audioName,
-  platform,
   isAudioMatch,
-  isMapMatch,
+  isReplayMatch,
   ...modalProps
 }: GenerateStatusModalProps) => {
   const { t } = useTranslation();
+
+  const title = useMemo(() => {
+    if (generateStatus === EGenerateQueryStatus.Error) {
+      return t('status-generate_status_error');
+    } else if (generateStatus === EGenerateQueryStatus.Finish) {
+      return t('modal-finished_title');
+    } else {
+      return t('modal-generating_title');
+    }
+  }, [generateStatus, t]);
 
   return (
     <Modal
       visible={visible}
       centered
-      bodyStyle={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      title={
-        generateStatus === EGenerateQueryStatus.Error
-          ? t('status-generate_status_error')
-          : t('upload-modal_title')
-      }
+      wrapClassName="generate-status-modal"
+      title={title}
       onCancel={onCancelGenerate}
       maskClosable={false}
       footer={null}
+      destroyOnClose
       {...modalProps}
     >
       <GenerateStatusPanel
@@ -63,8 +65,7 @@ export const GenerateStatusModal = ({
         replayName={replayName}
         mapName={mapName}
         audioName={audioName}
-        platform={platform}
-        isReplayMatch={isMapMatch}
+        isReplayMatch={isReplayMatch}
         isAudioMatch={isAudioMatch}
       />
     </Modal>

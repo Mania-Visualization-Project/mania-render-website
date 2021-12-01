@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
-import { FinishHandler, IGenerateTaskParams, ProcessingHandler, QueueHandler } from './types';
+import type { ExtraHandler, FinishHandler, IGenerateTaskParams, ProcessingHandler, QueueHandler } from './types';
 import { GenerateTask } from './index';
 
 export interface IUseGenerateTaskParams {
   onProcessing?: ProcessingHandler;
   onFinish?: FinishHandler;
   onQueue?: QueueHandler;
+  handleExtra?: ExtraHandler;
 }
 
 /**
@@ -13,11 +14,13 @@ export interface IUseGenerateTaskParams {
  * @param onFinish
  * @param onProcessing
  * @param onQueue
+ * @param handleExtra
  */
 export const useGenerateTask = ({
   onFinish,
   onProcessing,
   onQueue,
+  handleExtra,
 }: IUseGenerateTaskParams) => {
   const [task, setTask] = useState<GenerateTask | null>(null);
 
@@ -26,9 +29,10 @@ export const useGenerateTask = ({
     onQueue && (generateTask.onQueue = onQueue);
     onFinish && (generateTask.onFinish = onFinish);
     onProcessing && (generateTask.onProcessing = onProcessing);
+    handleExtra && (generateTask.handleExtra = handleExtra);
     setTask(generateTask);
     await generateTask.start();
-  }, [onFinish, onProcessing, onQueue]);
+  }, [handleExtra, onFinish, onProcessing, onQueue]);
 
   const downloadVideo = useCallback(() => {
     task?.download();

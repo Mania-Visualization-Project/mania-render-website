@@ -19,7 +19,8 @@ export type TI18nKeys =
   'modal-error_title' |
   'modal-error_file_size_over_max' |
   'modal-ok_text' |
-  'upload-modal_title' |
+  'modal-generating_title' |
+  'modal-finished_title' |
   'btn-generate' |
   'status-current_status' |
   'status-current_in_queue' |
@@ -29,6 +30,7 @@ export type TI18nKeys =
   'status-current_warning_label' |
   'status-current_warning_replay_not_match' |
   'status-current_warning_audio_not_match' |
+  'status-current_settings' |
   'status-generate_success' |
   'status-download_button' |
   'status-generate_progress_label' |
