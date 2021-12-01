@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { SettingOutlined } from '@ant-design/icons';
-import { Drawer, Tooltip, Typography } from 'antd';
+import { Drawer, Typography } from 'antd';
 import { useTranslation } from '../../common/i18n';
 import { SettingsForm } from './SettingsForm';
 import { SettingsButtonContainer, SettingsPanelContainer } from './styles';
@@ -11,8 +11,8 @@ export const SettingsButton = React.memo(() => {
   const [visible, setVisible] = useState(false);
 
   const handleShow = useCallback(() => {
-    setVisible(true);
-  }, []);
+    setVisible(!visible);
+  }, [visible]);
 
   const handleHide = useCallback(() => {
     setVisible(false);
@@ -21,15 +21,19 @@ export const SettingsButton = React.memo(() => {
   return (
     <SettingsButtonContainer>
       <div className="trigger-button" onClick={handleShow}>
-        <Tooltip title={t('app-settings')}>
-          <SettingOutlined />
-        </Tooltip>
+        <SettingOutlined />
       </div>
       <Drawer
         title={t('app-settings')}
         placement="right"
         visible={visible}
         onClose={handleHide}
+        mask={false}
+        maskClosable={false}
+        width={360}
+        style={{
+          marginTop: 64,
+        }}
       >
         <SettingsForm />
       </Drawer>

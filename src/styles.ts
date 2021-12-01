@@ -6,6 +6,9 @@ export const Container = styled.div`
     width: 100%;
 
     .app-header {
+      position: fixed;
+      width: 100%;
+      z-index: 9999;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -18,6 +21,7 @@ export const Container = styled.div`
     }
 
     .app-content {
+      padding-top: 80px;
       padding-bottom: 100px;
     }
 

@@ -53,7 +53,7 @@ export const NavigatorContainer = styled.div`
       }
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 767px) {
       .pc-title {
         display: none;
       }
@@ -68,7 +68,7 @@ export const NavigatorContainer = styled.div`
     height: 64px;
     display: none;
     
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 767px) {
       display: flex;
     }
   }
