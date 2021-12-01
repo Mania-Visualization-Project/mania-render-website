@@ -6,3 +6,8 @@ export const devLog = (...args: any[]) => {
     console.log(...args);
   }
 };
+
+export const productionLog = (...args: any[]) => {
+  // eslint-disable-next-line no-console
+  console.log(...args);
+};
