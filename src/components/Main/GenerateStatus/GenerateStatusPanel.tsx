@@ -3,7 +3,7 @@ import { Button, Descriptions, Space, Typography } from 'antd';
 import { useTranslation } from '../../../common/i18n';
 import { getLocalSettings } from '../../../common/local-settings';
 import { getFileExtension } from '../../../utils/get-file-extension';
-import { getDestructArrayInCondition } from '../../../utils/get-destruct-thing-in-condition';
+import { getThingByCondition } from '../../../utils/get-thing-by-condition';
 import { EGame } from '../../../data/enums';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateProgressPanel } from './GenerateProgressPanel';
@@ -51,6 +51,11 @@ export const GenerateStatusPanel = ({
   const { t } = useTranslation();
   const settings = getLocalSettings();
 
+  const isProcessingOrFinish =
+    status === EGenerateQueryStatus.Processing ||
+    status === EGenerateQueryStatus.Finish
+  ;
+
   const game = useMemo(() => {
     const fileExtension = getFileExtension(replayName);
 
@@ -90,20 +95,38 @@ export const GenerateStatusPanel = ({
     return [
       {
         label: t('status-current_file_name_label'),
-        content: `${replayName} (${t('status-current_warning_replay_not_match')})`,
-        type: isReplayMatch ? undefined : 'danger',
+        ...getThingByCondition(
+          isReplayMatch ? false : isProcessingOrFinish,
+          {
+            type: 'danger',
+            content: `${replayName} (${t('status-current_warning_replay_not_match')})`,
+          },
+          {
+            type: undefined,
+            content: `${replayName}`,
+          },
+        ),
       },
       {
         label: t('status-current_map_name_label'),
         content: mapName,
       },
-      ...getDestructArrayInCondition(!!audioName, {
+      {
         label: t('status-current_audio_name_label'),
-        content: `${audioName} (${t('status-current_warning_audio_not_match')})`,
-        type: isAudioMatch ? undefined : 'danger',
-      }),
+        ...getThingByCondition(
+          isAudioMatch ? false : isProcessingOrFinish,
+          {
+            type: 'danger',
+            content: `${audioName} (${t('status-current_warning_audio_not_match')})`,
+          },
+          {
+            type: undefined,
+            content: `${audioName}`,
+          },
+        ),
+      },
     ];
-  }, [audioName, isAudioMatch, isReplayMatch, mapName, replayName, t]);
+  }, [audioName, isAudioMatch, isProcessingOrFinish, isReplayMatch, mapName, replayName, t]);
 
   const descriptionList = useMemo(() => {
     return [

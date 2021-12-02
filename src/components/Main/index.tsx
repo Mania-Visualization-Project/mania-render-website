@@ -51,8 +51,8 @@ export const Main = React.memo(() => {
   const [replayName, setReplayName] = useState<string>('');
   const [mapName, setMapName] = useState<string>('');
   const [audioName, setAudioName] = useState<string>('');
-  const [isAudioMatch, setIsAudioMatch] = useState(false);
-  const [isReplayMatch, setIsReplayMatch] = useState(false);
+  const [isAudioMatch, setIsAudioMatch] = useState(true);
+  const [isReplayMatch, setIsReplayMatch] = useState(true);
 
   const [mapId, setMapId] = useState<string>('');
   const [bgmId, setBgmId] = useState<string>('');
@@ -194,6 +194,7 @@ export const Main = React.memo(() => {
 
   const handleGenerate = useCallback(async () => {
     setShowGenerateModal(true);
+    setGenerateStatus(EGenerateQueryStatus.Unknown);
     handleInitStatusData();
     const localSettings = getLocalSettings();
 

@@ -21,6 +21,16 @@ export const GenerateProgressPanel = ({
 
   return (
     <GenerateProgressPanelWrapper>
+      {status === EGenerateQueryStatus.Error && (
+        <div className="status-text">
+          {t('status-generate_status_error')}
+        </div>
+      )}
+      {status === EGenerateQueryStatus.Unknown && (
+        <div className="status-text">
+          {t('status-generate_status_unknown')}
+        </div>
+      )}
       {status === EGenerateQueryStatus.Queue && (
         <div className="status-text">
           {t(convertGenerateStatus2i18n(status))}
