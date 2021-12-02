@@ -4,6 +4,7 @@ import { useTranslation } from '../../../common/i18n';
 import { getLocalSettings } from '../../../common/local-settings';
 import { getFileExtension } from '../../../utils/get-file-extension';
 import { getThingByCondition } from '../../../utils/get-thing-by-condition';
+import { getDestructArrayInCondition } from '../../../utils/get-destruct-thing-in-condition';
 import { EGame } from '../../../data/enums';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateProgressPanel } from './GenerateProgressPanel';
@@ -111,7 +112,7 @@ export const GenerateStatusPanel = ({
         label: t('status-current_map_name_label'),
         content: mapName,
       },
-      {
+      ...getDestructArrayInCondition(!!audioName, {
         label: t('status-current_audio_name_label'),
         ...getThingByCondition(
           isAudioMatch ? false : isProcessingOrFinish,
@@ -124,7 +125,7 @@ export const GenerateStatusPanel = ({
             content: `${audioName}`,
           },
         ),
-      },
+      }),
     ];
   }, [audioName, isAudioMatch, isProcessingOrFinish, isReplayMatch, mapName, replayName, t]);
 
