@@ -1,5 +1,5 @@
 import { ISettings } from '../data/settings';
-import { EGenerateQueryStatus } from '../components/Main/GenerateTask/types';
+import { EGenerateQueryStatus } from '../components/Main/GenerateCore/GenerateTask/types';
 
 export interface IGenerateParams {
   map: string;

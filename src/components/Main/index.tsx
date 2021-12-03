@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import type { UploadProps } from 'antd';
-import { Button, Modal, Space } from 'antd';
+import { Modal, Space } from 'antd';
 import { CustomerServiceFilled, FileZipOutlined, PlaySquareOutlined } from '@ant-design/icons';
 import { useTranslation } from '../../common/i18n';
-import { DEFAULT_SETTINGS } from '../../common/constants';
-import { getLocalSettings } from '../../common/local-settings';
 import { useGlobalConfig } from '../../common/hooks/useGlobalConfig';
 import { getFileExtension } from '../../utils/get-file-extension';
 import { __SHABI_SAFARI__ } from '../../utils/env';
@@ -13,11 +11,8 @@ import { uploadFiles } from '../../api/upload-files';
 import { transformResponse } from '../../api/transform-response';
 import { ErrorView } from '../ErrorToast';
 import { DraggerUpload } from '../DraggerUpload';
-import { useGenerateTask } from './GenerateTask/useGenerateTask';
-import type { ExtraHandler, FinishHandler, ProcessingHandler, QueueHandler } from './GenerateTask/types';
-import { EGenerateQueryStatus } from './GenerateTask/types';
 import { MainWrapperWithSettings } from './MainWrapperWithSettings';
-import { GenerateStatusModal } from './GenerateStatus';
+import { GenerateCore } from './GenerateCore';
 import { MainContainer } from './styles';
 
 type CustomRequestOptions = Parameters<Exclude<UploadProps['customRequest'], undefined>>[0];
@@ -44,32 +39,16 @@ export const Main = React.memo(() => {
 
   const { setConfig, config } = useGlobalConfig();
 
-  const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [disableGenerate, setDisableGenerate] = useState(true);
   const [isNeedUploadBgm, setIsNeedUploadBgm] = useState(false);
 
   const [replayName, setReplayName] = useState<string>('');
   const [mapName, setMapName] = useState<string>('');
-  const [audioName, setAudioName] = useState<string>('');
-  const [isAudioMatch, setIsAudioMatch] = useState(true);
-  const [isReplayMatch, setIsReplayMatch] = useState(true);
+  const [bgmName, setBgmName] = useState<string>('');
 
   const [mapId, setMapId] = useState<string>('');
   const [bgmId, setBgmId] = useState<string>('');
   const [replayId, setReplayId] = useState<string>('');
-
-  /**
-   * generate panel info state
-   */
-  const [generatePercent, setGeneratePercent] = useState<number>(0);
-  const [generateStatus, setGenerateStatus] = useState(EGenerateQueryStatus.Unknown);
-  const [queueCount, setQueueCount] = useState<number>(0);
-
-  const handleInitStatusData = useCallback(() => {
-    setGeneratePercent(0);
-    setQueueCount(0);
-    setGenerateStatus(EGenerateQueryStatus.Unknown);
-  }, []);
 
   const handleSetId = useCallback((type: EFileType, id: string) => {
     if (type === EFileType.Bgm) {
@@ -124,36 +103,6 @@ export const Main = React.memo(() => {
     return false;
   }, [handleSetId, t]);
 
-  const onProcessing = useCallback<ProcessingHandler>((progress) => {
-    setQueueCount(0);
-    setGenerateStatus(EGenerateQueryStatus.Processing);
-    setGeneratePercent(progress);
-  }, []);
-
-  const onQueue = useCallback<QueueHandler>((count) => {
-    setQueueCount(count);
-    setGenerateStatus(EGenerateQueryStatus.Queue);
-  }, []);
-
-  const onFinish = useCallback<FinishHandler>(() => {
-    setGenerateStatus(EGenerateQueryStatus.Finish);
-    setGeneratePercent(100);
-  }, []);
-
-  const handleExtra = useCallback<ExtraHandler>((extra) => {
-    if (extra) {
-      setIsAudioMatch(!extra.is_music_mismatch);
-      setIsReplayMatch(!extra.is_replay_mismatch);
-    }
-  }, []);
-
-  const { generateVideo, downloadVideo, cancelTask } = useGenerateTask({
-    onProcessing,
-    onQueue,
-    onFinish,
-    handleExtra,
-  });
-
   const beforeUploadMap = useCallback<BeforeUploadHandler>((file) => {
     const filename = file.name;
     const fileExt = getFileExtension(filename);
@@ -164,7 +113,7 @@ export const Main = React.memo(() => {
       setIsNeedUploadBgm(true);
     } else {
       setIsNeedUploadBgm(false);
-      setAudioName('');
+      setBgmName('');
     }
   }, []);
 
@@ -189,48 +138,8 @@ export const Main = React.memo(() => {
 
   const beforeUploadBgm = useCallback<BeforeUploadHandler>((file) => {
     const filename = file.name;
-    setAudioName(filename);
+    setBgmName(filename);
   }, []);
-
-  const handleGenerate = useCallback(async () => {
-    setShowGenerateModal(true);
-    setGenerateStatus(EGenerateQueryStatus.Unknown);
-    handleInitStatusData();
-    const localSettings = getLocalSettings();
-
-    try {
-      await generateVideo({
-        map_id: mapId,
-        bgm_id: bgmId,
-        replay_id: replayId,
-        settings: localSettings || DEFAULT_SETTINGS,
-      });
-    } catch (err: any) {
-      ErrorView.modal(err);
-      cancelTask();
-      setGenerateStatus(EGenerateQueryStatus.Error);
-    }
-  }, [bgmId, cancelTask, generateVideo, handleInitStatusData, mapId, replayId]);
-
-  const handleCancelGenerate = useCallback(() => {
-    if (generateStatus === EGenerateQueryStatus.Finish || generateStatus === EGenerateQueryStatus.Error) {
-      setShowGenerateModal(false);
-      cancelTask();
-      return;
-    }
-
-    Modal.confirm({
-      title: t('modal-generate_close_confirm_title'),
-      content: t('modal-generate_close_confirm_content'),
-      okText: t('modal-generate_close_confirm_ok_text'),
-      cancelText: t('modal-generate_close_confirm_cancel_text'),
-      centered: true,
-      onOk() {
-        setShowGenerateModal(false);
-        cancelTask();
-      },
-    });
-  }, [cancelTask, generateStatus, t]);
 
   useEffect(() => {
     if (!mapId || !replayId || (isNeedUploadBgm && !bgmId)) {
@@ -278,31 +187,14 @@ export const Main = React.memo(() => {
             />
           )}
         </MainWrapperWithSettings>
-        <Space
-          className="btn-wrapper"
-          size={24}
-          direction="vertical"
-        >
-          <Button
-            block type="primary"
-            disabled={disableGenerate}
-            onClick={handleGenerate}
-          >
-            {t('btn-generate')}
-          </Button>
-        </Space>
-        <GenerateStatusModal
-          visible={showGenerateModal}
-          generateStatus={generateStatus}
-          generatePercent={generatePercent}
-          onCancelGenerate={handleCancelGenerate}
-          queueCount={queueCount}
-          onDownload={downloadVideo}
-          replayName={replayName}
+        <GenerateCore
+          disable={disableGenerate}
+          mapId={mapId}
+          bgmId={bgmId}
+          replayId={replayId}
           mapName={mapName}
-          audioName={audioName}
-          isReplayMatch={isReplayMatch}
-          isAudioMatch={isAudioMatch}
+          bgmName={bgmName}
+          replayName={replayName}
         />
       </Space>
     </MainContainer>
