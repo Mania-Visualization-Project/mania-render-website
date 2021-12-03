@@ -30,9 +30,9 @@ const supportMapsAccept = SUPPORT_MAP.join(',');
 const supportReplayAccept = SUPPORT_REPLAY.join(',');
 
 /**
- * File max size 25M
+ * File max size 100M
  */
-const MAX_FILESIZE = 1024 * 1024 * 25;
+const MAX_FILESIZE = 1024 * 1024 * 100;
 
 /**
  * Main
