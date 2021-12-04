@@ -21,7 +21,7 @@ const resource: Record<TI18nKeys, string> = {
   'modal-generating_title': 'Generating...',
   'modal-finished_title': 'Finished',
   'modal-error_title': 'Error!',
-  'modal-error_file_size_over_max': 'File size can not over 25MB',
+  'modal-error_file_size_over_max': 'File size can not over 100MB',
   'modal-ok_text': 'OK!',
   'btn-generate': 'Generate Now!',
   'status-current_status': 'Current status',

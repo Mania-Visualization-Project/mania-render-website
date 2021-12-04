@@ -19,7 +19,7 @@ const resource: Record<TI18nKeys, string> = {
   'main-upload_bgm_hint': '支持所有的 osu 或 malody 支持的音频文件',
   'main-drag_upload_text': '拖动或点击此处上传',
   'modal-error_title': '错误！',
-  'modal-error_file_size_over_max': '文件大小不能超过 25M !',
+  'modal-error_file_size_over_max': '文件大小不能超过 100M !',
   'modal-ok_text': '确认',
   'modal-generating_title': '正在生成...',
   'modal-finished_title': '生成成功！',
