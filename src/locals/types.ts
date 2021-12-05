@@ -9,6 +9,12 @@ export type TI18nKeys =
   'app-mode_simple' |
   'btn-generate' |
   'current-language' |
+  'error-error' |
+  'error-beatmap_not_found' |
+  'error-render_failed' |
+  'error-replay_invalid' |
+  'error-beatmap_invalid' |
+  'error-time_exceeded' |
   'main-drag_upload_text' |
   'main-upload_bgm' |
   'main-upload_bgm_hint' |

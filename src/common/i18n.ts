@@ -8,7 +8,7 @@ import { devLog } from '../utils/dev-log';
 import { DEFAULT_LANGUAGE } from './constants';
 import { getLocalLanguage, setLocalLanguage } from './local-language';
 
-type TranslationFunctionType = (key: TI18nKeys) => string;
+type TranslationFunctionType = (key: TI18nKeys, options?: Record<string, string>) => string;
 
 export const initI18n = () => {
   i18next

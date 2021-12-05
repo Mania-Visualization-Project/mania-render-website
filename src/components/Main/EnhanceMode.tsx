@@ -1,5 +1,11 @@
+import { useTranslation } from '../../common/i18n';
+
 export const EnhanceMode = () => {
+  const { t } = useTranslation();
+
   return (
-    <div>增强模式</div>
+    <div>
+      {t('error-error', { message: 'hello world' })}
+    </div>
   );
 };
