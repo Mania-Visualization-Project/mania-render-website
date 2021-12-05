@@ -5,6 +5,8 @@ const resource: Record<TI18nKeys, string> = {
   'app-feedback': 'Feedback',
   'app-settings': 'Settings',
   'app-title': 'Mania Render WebSite',
+  'app-mode_enhance': 'Enhance Mode',
+  'app-mode_simple': 'Simple Mode',
   'btn-generate': 'Generate Now!',
   'current-language': 'English',
   'main-drag_upload_text': 'Click or drag file to this area to upload',

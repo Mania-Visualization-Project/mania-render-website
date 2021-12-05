@@ -5,6 +5,8 @@ const resource: Record<TI18nKeys, string> = {
   'app-feedback': '反馈',
   'app-settings': '设置',
   'app-title': '骂娘渲染器',
+  'app-mode_enhance': '增强模式',
+  'app-mode_simple': '简洁模式',
   'btn-generate': '一键生成！',
   'current-language': '简体中文',
   'main-drag_upload_text': '拖动或点击此处上传',

@@ -3,6 +3,8 @@ export type TI18nKeys =
   'app-feedback' |
   'app-settings' |
   'app-title' |
+  'app-mode_enhance' |
+  'app-mode_simple' |
   'btn-generate' |
   'current-language' |
   'main-drag_upload_text' |
