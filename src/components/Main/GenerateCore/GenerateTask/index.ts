@@ -1,9 +1,9 @@
-import { DEFAULT_SETTINGS } from '../../../common/constants';
-import { ISettings } from '../../../data/settings';
-import { downloadFile } from '../../../utils/download-file';
-import { devLog } from '../../../utils/dev-log';
-import type { IGenerateParams, IQueryResponseData } from '../../../api/generate';
-import { generateVideo, queueTask } from '../../../api/generate';
+import { DEFAULT_SETTINGS } from '../../../../common/constants';
+import { downloadFile } from '../../../../utils/download-file';
+import { devLog } from '../../../../utils/dev-log';
+import { ISettings } from '../../../../data/settings';
+import type { IGenerateParams, IQueryResponseData } from '../../../../service/generate';
+import { generateVideo, queueTask } from '../../../../service/generate';
 import type {
   FinishHandler,
   ProcessingHandler,
@@ -116,7 +116,7 @@ export class GenerateTask {
     const handleFinish = this._onFinish;
     const handleExtra = this._handleExtra;
 
-    return new Promise<void>(((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this._query_timer = setInterval(async () => {
         try {
           const result = await this.query();
@@ -154,7 +154,7 @@ export class GenerateTask {
           reject(err);
         }
       }, GenerateTask.QUERY_INTERVAL);
-    }));
+    });
   }
 
   private async query(): Promise<IQueryResponseData> {

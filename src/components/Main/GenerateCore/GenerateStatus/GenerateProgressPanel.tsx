@@ -1,8 +1,8 @@
 import React from 'react';
 import { round } from 'lodash';
 import { Progress } from 'antd';
-import { useTranslation } from '../../../common/i18n';
-import { convertGenerateStatus2i18n } from '../../../common/converters/convert-generate-status2i18n';
+import { useTranslation } from '../../../../common/i18n';
+import { convertGenerateStatus2i18n } from '../../../../common/converters/convert-generate-status2i18n';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateProgressPanelWrapper } from './styles';
 

@@ -1,5 +1,5 @@
-import { IResponse } from '../api/types';
-import { devLog } from './dev-log';
+import { devLog } from '../../utils/dev-log';
+import { IResponse } from './types';
 
 export type Method = 'PUT' | 'POST' | 'PATCH';
 

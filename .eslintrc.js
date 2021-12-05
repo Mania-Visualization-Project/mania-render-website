@@ -110,6 +110,12 @@ module.exports = {
     'import/order': 'error',
     'import/default': 'off',
     'import/no-named-as-default-member': 'off',
+    'import/no-self-import': 'error',
+    'import/no-absolute-path': 'error',
+    'import/first': 'error',
+    'import/exports-last': 'off',
+    'import/newline-after-import': 'error',
+    'import/no-duplicates': ['error'],
   },
   'settings': {
     'import/parser': {

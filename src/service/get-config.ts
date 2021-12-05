@@ -1,7 +1,8 @@
 import { DEFAULT_GLOBAL_SETTINGS } from '../common/constants';
 import type { IGlobalSettings } from '../data/settings';
-import { http } from './core';
-import { transformResponse } from './transform-response';
+import { http , transformResponse } from './core';
+
+let configPromise: Promise<IGlobalSettings>;
 
 export const getConfig = async (): Promise<IGlobalSettings> => {
   const res = await http.get('/mania/api/config');
@@ -11,8 +12,6 @@ export const getConfig = async (): Promise<IGlobalSettings> => {
     ...(data || null),
   };
 };
-
-let configPromise: Promise<IGlobalSettings>;
 
 export const getConfigWithCache = () => {
   if (!configPromise) {

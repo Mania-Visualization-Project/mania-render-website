@@ -6,9 +6,9 @@ import { useTranslation } from '../../common/i18n';
 import { getLocalSettings, setLocalSettings } from '../../common/local-settings';
 import type { ISettings } from '../../data/settings';
 import { EMalodyPlatform } from '../../data/settings';
-import { getConfigWithCache } from '../../api/get-config';
-import { ErrorView } from '../ErrorToast';
+import { getConfigWithCache } from '../../service/get-config';
 import { useGlobalConfig } from '../../common/hooks/useGlobalConfig';
+import { ErrorView } from '../ErrorToast';
 
 export const SettingsForm = () => {
   const { t } = useTranslation();

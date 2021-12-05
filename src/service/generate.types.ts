@@ -1,16 +1,5 @@
 import { ISettings } from '../data/settings';
-import { EGenerateQueryStatus } from '../components/Main/GenerateTask/types';
-
-export interface IGenerateParams {
-  map: string;
-  replay: string;
-  extra: ISettings;
-  bgm?: string;
-}
-
-export interface IGenerateResponseData {
-  task_id: string;
-}
+import { EGenerateQueryStatus } from '../components/Main/GenerateCore/GenerateTask/types';
 
 interface IInQueueResponse {
   type: EGenerateQueryStatus.Queue;
@@ -43,4 +32,13 @@ interface IQueryResponseExtraData {
 
 export type IQueryResponseData = IQueryResponseBaseData & IQueryResponseExtraData;
 
+export interface IGenerateParams {
+  map: string;
+  replay: string;
+  extra: ISettings;
+  bgm?: string;
+}
 
+export interface IGenerateResponseData {
+  task_id: string;
+}
