@@ -116,7 +116,7 @@ export class GenerateTask {
     const handleFinish = this._onFinish;
     const handleExtra = this._handleExtra;
 
-    return new Promise<void>(((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this._query_timer = setInterval(async () => {
         try {
           const result = await this.query();
@@ -154,7 +154,7 @@ export class GenerateTask {
           reject(err);
         }
       }, GenerateTask.QUERY_INTERVAL);
-    }));
+    });
   }
 
   private async query(): Promise<IQueryResponseData> {
