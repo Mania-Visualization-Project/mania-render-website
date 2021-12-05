@@ -33,6 +33,8 @@ const resource: Record<TI18nKeys, string> = {
   'modal-generate_close_confirm_title': 'Are you sure to close?',
   'modal-generating_title': 'Generating...',
   'modal-ok_text': 'OK!',
+  'modal-close_text': 'Close',
+  'modal-feedback_btn_text': 'Feedback',
   'settings-fps': 'FPS',
   'settings-platform': 'Malody Platform',
   'settings-speed': 'Speed',

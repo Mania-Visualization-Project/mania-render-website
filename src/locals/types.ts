@@ -24,6 +24,8 @@ export type TI18nKeys =
   'main-upload_replay_placeholder_hint' |
   'modal-error_file_size_over_max' |
   'modal-error_title' |
+  'modal-close_text' |
+  'modal-feedback_btn_text' |
   'modal-finished_title' |
   'modal-generate_close_confirm_cancel_text' |
   'modal-generate_close_confirm_content' |

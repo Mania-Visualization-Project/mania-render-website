@@ -33,6 +33,8 @@ const resource: Record<TI18nKeys, string> = {
   'modal-generate_close_confirm_title': '您确定要关闭吗？',
   'modal-generating_title': '正在生成...',
   'modal-ok_text': '确认',
+  'modal-close_text': '关闭',
+  'modal-feedback_btn_text': '反馈',
   'settings-fps': 'FPS',
   'settings-platform': '平台',
   'settings-speed': '下落速度（像素/帧）',
