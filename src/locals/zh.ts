@@ -2,6 +2,8 @@ import { TI18nKeys } from './types';
 
 const resource: Record<TI18nKeys, string> = {
   'app-download': '下载',
+  'app-error_refresh': '刷新页面',
+  'app-error_page_error': '页面出错！',
   'app-feedback': '反馈',
   'app-settings': '设置',
   'app-title': '骂娘渲染器',

@@ -1,5 +1,7 @@
 export type TI18nKeys =
   'app-download' |
+  'app-error_refresh' |
+  'app-error_page_error' |
   'app-feedback' |
   'app-settings' |
   'app-title' |

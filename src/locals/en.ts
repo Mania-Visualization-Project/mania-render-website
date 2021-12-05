@@ -2,6 +2,8 @@ import { TI18nKeys } from './types';
 
 const resource: Record<TI18nKeys, string> = {
   'app-download': 'Download',
+  'app-error_refresh': 'Refresh',
+  'app-error_page_error': 'Internal Server Error',
   'app-feedback': 'Feedback',
   'app-settings': 'Settings',
   'app-title': 'Mania Render WebSite',
