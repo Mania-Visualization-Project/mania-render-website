@@ -1,6 +1,6 @@
-import type { IResponse } from './core/types';
-import { transformResponse } from './core/transform-response';
-import { http } from './core/core';
+import type { IResponse } from './core';
+import { transformResponse , http } from './core';
+
 import type { IGenerateParams, IGenerateResponseData, IQueryResponseData } from './generate.types';
 
 export type { IGenerateParams, IGenerateResponseData, IQueryResponseData };

@@ -1,5 +1,5 @@
 import { EFileType } from '../data/enums';
-import { UploadTask } from './core/upload';
+import { UploadTask } from './core';
 
 export interface IUploadFilesParams {
   type: EFileType;
