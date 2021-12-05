@@ -25,10 +25,13 @@ export const initI18n = () => {
     });
 };
 
-export const i18n = i18next;
+export const t: TranslationFunctionType = (key, options): string => {
+  return i18next.t<string, TI18nKeys>(key, options);
+};
 
-export const t = (key: TI18nKeys): string => {
-  return i18next.t<string, TI18nKeys>(key);
+export const i18n = {
+  ...i18next,
+  t,
 };
 
 export const useTranslation = () => {
