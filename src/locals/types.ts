@@ -1,19 +1,19 @@
 export type TI18nKeys =
   'app-download' |
-  'app-error_refresh' |
   'app-error_page_error' |
+  'app-error_refresh' |
   'app-feedback' |
-  'app-settings' |
-  'app-title' |
   'app-mode_enhance' |
   'app-mode_simple' |
+  'app-settings' |
+  'app-title' |
   'btn-generate' |
   'current-language' |
-  'error-error' |
+  'error-beatmap_invalid' |
   'error-beatmap_not_found' |
+  'error-error' |
   'error-render_failed' |
   'error-replay_invalid' |
-  'error-beatmap_invalid' |
   'error-time_exceeded' |
   'main-drag_upload_text' |
   'main-upload_bgm' |
@@ -22,9 +22,9 @@ export type TI18nKeys =
   'main-upload_map_hint' |
   'main-upload_replay_placeholder' |
   'main-upload_replay_placeholder_hint' |
+  'modal-close_text' |
   'modal-error_file_size_over_max' |
   'modal-error_title' |
-  'modal-close_text' |
   'modal-feedback_btn_text' |
   'modal-finished_title' |
   'modal-generate_close_confirm_cancel_text' |
