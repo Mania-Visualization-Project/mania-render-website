@@ -1,9 +1,9 @@
 import { DEFAULT_SETTINGS } from '../../../../common/constants';
-import { ISettings } from '../../../../data/settings';
 import { downloadFile } from '../../../../utils/download-file';
 import { devLog } from '../../../../utils/dev-log';
-import type { IGenerateParams, IQueryResponseData } from '../../../../api/generate';
-import { generateVideo, queueTask } from '../../../../api/generate';
+import { ISettings } from '../../../../data/settings';
+import type { IGenerateParams, IQueryResponseData } from '../../../../service/generate';
+import { generateVideo, queueTask } from '../../../../service/generate';
 import type {
   FinishHandler,
   ProcessingHandler,

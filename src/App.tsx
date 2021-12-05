@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import { changeLanguage, initI18n } from './common/i18n';
 import { getLocalLanguage, setLocalLanguage } from './common/local-language';
 import { defaultConfig, GlobalConfig } from './common/hooks/useGlobalConfig';
-import { getConfigWithCache } from './api/get-config';
+import { getConfigWithCache } from './service/get-config';
 import { Main } from './components/Main';
 import { Navigator } from './components/Navigator';
 import { ErrorView } from './components/ErrorToast';

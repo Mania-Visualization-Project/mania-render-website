@@ -1,7 +1,7 @@
-import type { IResponse } from './types';
+import type { IResponse } from './core/types';
+import { transformResponse } from './core/transform-response';
+import { http } from './core/core';
 import type { IGenerateParams, IGenerateResponseData, IQueryResponseData } from './generate.types';
-import { transformResponse } from './transform-response';
-import { http } from './core';
 
 export type { IGenerateParams, IGenerateResponseData, IQueryResponseData };
 

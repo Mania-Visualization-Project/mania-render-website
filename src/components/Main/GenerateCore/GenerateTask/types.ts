@@ -1,4 +1,4 @@
-import { IQueryResponseData } from '../../../../api/generate.types';
+import { IQueryResponseData } from '../../../../service/generate.types';
 import { ISettings } from '../../../../data/settings';
 import { IErrorMessage } from '../../../ErrorToast';
 
