@@ -135,7 +135,7 @@ export const SimpleMode = () => {
   }, []);
 
   useEffect(() => {
-    if (!mapId || !replayId || (isNeedUploadBgm && !bgmId)) {
+    if (!mapId || !replayId) {
       setDisableGenerate(true);
     } else {
       setDisableGenerate(false);
