@@ -1,6 +1,6 @@
-import { IQueryResponseData } from '../../../api/generate.types';
-import { ISettings } from '../../../data/settings';
-import { IErrorMessage } from '../../ErrorToast';
+import { IQueryResponseData } from '../../../../service/generate.types';
+import { ISettings } from '../../../../data/settings';
+import { IErrorMessage } from '../../../ErrorToast';
 
 export type QueueHandler = (count: number) => void;
 export type ProcessingHandler = (progress: number) => void;

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Modal, ModalProps } from 'antd';
-import { useTranslation } from '../../../common/i18n';
+import { useTranslation } from '../../../../common/i18n';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateStatusPanel } from './GenerateStatusPanel';
 import './styles.less';
@@ -13,7 +13,7 @@ export interface GenerateStatusModalProps extends ModalProps{
   onDownload: () => void;
   replayName: string;
   mapName: string;
-  audioName: string;
+  bgmName: string;
   isReplayMatch: boolean;
   isAudioMatch: boolean;
 }
@@ -27,7 +27,7 @@ export const GenerateStatusModal = ({
   onDownload,
   replayName,
   mapName,
-  audioName,
+  bgmName,
   isAudioMatch,
   isReplayMatch,
   ...modalProps
@@ -64,7 +64,7 @@ export const GenerateStatusModal = ({
         onDownload={onDownload}
         replayName={replayName}
         mapName={mapName}
-        audioName={audioName}
+        bgmName={bgmName}
         isReplayMatch={isReplayMatch}
         isAudioMatch={isAudioMatch}
       />

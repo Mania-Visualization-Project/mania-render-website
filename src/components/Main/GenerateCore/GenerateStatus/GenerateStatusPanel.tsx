@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { Button, Descriptions, Space, Typography } from 'antd';
-import { useTranslation } from '../../../common/i18n';
-import { getLocalSettings } from '../../../common/local-settings';
-import { getFileExtension } from '../../../utils/get-file-extension';
-import { getThingByCondition } from '../../../utils/get-thing-by-condition';
-import { getDestructArrayInCondition } from '../../../utils/get-destruct-thing-in-condition';
-import { EGame } from '../../../data/enums';
+import { useTranslation } from '../../../../common/i18n';
+import { getLocalSettings } from '../../../../common/local-settings';
+import { getFileExtension } from '../../../../utils/get-file-extension';
+import { getThingByCondition } from '../../../../utils/get-thing-by-condition';
+import { getDestructArrayInCondition } from '../../../../utils/get-destruct-thing-in-condition';
+import { EGame } from '../../../../data/enums';
 import { EGenerateQueryStatus } from '../GenerateTask/types';
 import { GenerateProgressPanel } from './GenerateProgressPanel';
 import { GenerateStatusPanelWrapper } from './styles';
@@ -14,7 +14,7 @@ export interface GenerateStatusPanelProps {
   percent: number;
   status: EGenerateQueryStatus;
   queueCount: number;
-  audioName: string;
+  bgmName: string;
   mapName: string;
   replayName: string;
   isReplayMatch: boolean;
@@ -43,7 +43,7 @@ export const GenerateStatusPanel = ({
   queueCount,
   finished,
   onDownload,
-  audioName,
+  bgmName,
   mapName,
   replayName,
   isAudioMatch,
@@ -112,22 +112,22 @@ export const GenerateStatusPanel = ({
         label: t('status-current_map_name_label'),
         content: mapName,
       },
-      ...getDestructArrayInCondition(!!audioName, {
+      ...getDestructArrayInCondition(!!bgmName, {
         label: t('status-current_audio_name_label'),
         ...getThingByCondition(
           isAudioMatch ? false : isProcessingOrFinish,
           {
             type: 'danger',
-            content: `${audioName} (${t('status-current_warning_audio_not_match')})`,
+            content: `${bgmName} (${t('status-current_warning_audio_not_match')})`,
           },
           {
             type: undefined,
-            content: `${audioName}`,
+            content: `${bgmName}`,
           },
         ),
       }),
     ];
-  }, [audioName, isAudioMatch, isProcessingOrFinish, isReplayMatch, mapName, replayName, t]);
+  }, [bgmName, isAudioMatch, isProcessingOrFinish, isReplayMatch, mapName, replayName, t]);
 
   const descriptionList = useMemo(() => {
     return [

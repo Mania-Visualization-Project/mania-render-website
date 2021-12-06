@@ -8,6 +8,8 @@ import { devLog } from '../utils/dev-log';
 import { DEFAULT_LANGUAGE } from './constants';
 import { getLocalLanguage, setLocalLanguage } from './local-language';
 
+type TranslationFunctionType = (key: TI18nKeys, options?: Record<string, string>) => string;
+
 export const initI18n = () => {
   i18next
     .use(initReactI18next)
@@ -23,13 +25,11 @@ export const initI18n = () => {
     });
 };
 
-export const i18n = i18next;
-
-export const t = (key: TI18nKeys): string => {
-  return i18next.t<string, TI18nKeys>(key);
+export const t = (key: TI18nKeys, options?: Record<string, string>): string => {
+  return i18next.t<string, TI18nKeys>(key, options);
 };
 
-type TranslationFunctionType = (key: TI18nKeys) => string;
+export const i18n = i18next;
 
 export const useTranslation = () => {
   const { t, ...restMembers } = _useTranslation();

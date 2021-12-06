@@ -1,4 +1,4 @@
-import { EGenerateQueryStatus } from '../../components/Main/GenerateTask/types';
+import { EGenerateQueryStatus } from '../../components/Main/GenerateCore/GenerateTask/types';
 import { TI18nKeys } from '../../locals/types';
 
 export const convertGenerateStatus2i18n = (status: EGenerateQueryStatus): TI18nKeys => {
