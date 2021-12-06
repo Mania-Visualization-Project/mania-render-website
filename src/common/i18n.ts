@@ -25,14 +25,11 @@ export const initI18n = () => {
     });
 };
 
-export const t: TranslationFunctionType = (key, options): string => {
+export const t = (key: TI18nKeys, options?: Record<string, string>): string => {
   return i18next.t<string, TI18nKeys>(key, options);
 };
 
-export const i18n = {
-  ...i18next,
-  t,
-};
+export const i18n = i18next;
 
 export const useTranslation = () => {
   const { t, ...restMembers } = _useTranslation();
