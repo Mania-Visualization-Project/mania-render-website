@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import { Image, Modal, ModalProps } from 'antd';
 import { GithubFilled } from '@ant-design/icons';
 import { FEEDBACK_URL, QQ_GROUP_URL } from '../../common/constants';
@@ -58,3 +59,22 @@ export const FeedbackModal = ({
     </Modal>
   );
 };
+
+export const FeedbackModalApi = (() => {
+  return {
+    show() {
+      const div = document.createElement('div');
+      const onClose = () => {
+        ReactDOM.unmountComponentAtNode(div);
+      };
+
+      ReactDOM.render(
+        <FeedbackModal
+          visible={true}
+          onCancel={onClose}
+        />,
+        div,
+      );
+    },
+  };
+})();

@@ -1,7 +1,6 @@
 import { message, Modal } from 'antd';
-import { FEEDBACK_URL } from '../../common/constants';
 import { i18n } from '../../common/i18n';
-import { openTab } from '../../utils/open-tab';
+import { FeedbackModalApi } from '../FeedBack/FeedbackModal';
 
 export interface IErrorMessage {
   message: string;
@@ -25,10 +24,12 @@ export const ErrorView = (() => {
         closable: true,
         keyboard: true,
         okCancel: true,
+        centered: true,
         cancelText: i18n.t('modal-close_text'),
         okText: i18n.t('modal-feedback_btn_text'),
         onOk: () => {
-          openTab(FEEDBACK_URL);
+          FeedbackModalApi.show();
+          return Promise.reject();
         },
       });
     },
