@@ -35,6 +35,8 @@ const resource: Record<TI18nKeys, string> = {
   'modal-generate_close_confirm_title': 'Are you sure to close?',
   'modal-generating_title': 'Generating...',
   'modal-ok_text': 'OK!',
+  'settings-video_max_ratio_error': 'The value of width * height can not overflow {{val}}',
+  'settings-max_drop_speed_error': 'The value of Fps * Speed can not overflow {{val}}!',
   'settings-fps': 'FPS',
   'settings-platform': 'Malody Platform',
   'settings-speed': 'Speed',

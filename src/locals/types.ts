@@ -38,6 +38,8 @@ export type TI18nKeys =
   'settings-speed' |
   'settings-video_height' |
   'settings-video_width' |
+  'settings-video_max_ratio_error' |
+  'settings-max_drop_speed_error' |
   'status-current_audio_name_label' |
   'status-current_file_name_label' |
   'status-current_in_queue' |

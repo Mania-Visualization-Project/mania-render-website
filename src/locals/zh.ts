@@ -35,6 +35,8 @@ const resource: Record<TI18nKeys, string> = {
   'modal-generate_close_confirm_title': '您确定要关闭吗？',
   'modal-generating_title': '正在生成...',
   'modal-ok_text': '确认',
+  'settings-video_max_ratio_error': '视频宽度乘以视频高度不能超过 {{val}}！',
+  'settings-max_drop_speed_error': 'Fps 乘以下落速度不能超过 {{val}}!',
   'settings-fps': 'FPS',
   'settings-platform': '平台',
   'settings-speed': '下落速度（像素/帧）',
