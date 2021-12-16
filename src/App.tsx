@@ -10,6 +10,8 @@ import { ErrorView } from './components/ErrorToast';
 import { PageFooter } from './components/PageFooter';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Container } from './styles';
+import { getDownload } from './service/get-download';
+import { setLocalDownload } from './common/local-download';
 
 const { Header, Content, Footer } = Layout;
 
@@ -33,6 +35,14 @@ export const App = () => {
         ErrorView.toast(err);
       });
     }
+  }, []);
+
+  useEffect(() => {
+    getDownload().then((res) => {
+      setLocalDownload(res);
+    }).catch((err: any) => {
+      ErrorView.toast(err);
+    });
   }, []);
 
   return (

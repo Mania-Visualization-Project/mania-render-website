@@ -1,6 +1,6 @@
 {
   "name": "mania-render-website",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "scripts": {
     "prepare": "npx husky install",
     "dev": "vite",

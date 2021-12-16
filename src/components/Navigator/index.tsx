@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { Dropdown, Menu, Space } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import { DOWNLOAD_ZIP_FILENAME, DOWNLOAD_ZIP_URL } from '../../common/constants';
 import { useTranslation } from '../../common/i18n';
+import { getLocalDownload } from '../../common/local-download';
 import { downloadFile } from '../../utils/download-file';
 import { LanguageSwitch } from '../LanguageSwitch';
 import { FeedBack } from '../FeedBack';
@@ -11,8 +11,10 @@ import { NavigatorContainer } from './styles';
 
 export const Navigator = () => {
   const { t } = useTranslation();
+
   const handleDownload = useCallback(() => {
-    downloadFile(DOWNLOAD_ZIP_URL, DOWNLOAD_ZIP_FILENAME);
+    const { packageName, packageUrl } = getLocalDownload();
+    downloadFile(packageUrl, packageName);
   }, []);
 
   const menu = useMemo(() => {
@@ -44,7 +46,6 @@ export const Navigator = () => {
           className="nav-menu-item"
         >
           <FeedBack />
-          {/*{t('app-feedback')}*/}
         </Menu.Item>
       </Menu>
     );
